@@ -18,7 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.edix.apirest.cinema.entities.Card;
 import com.edix.apirest.cinema.entities.User;
-import com.edix.apirest.cinema.repository.UserRepository;
 import com.edix.apirest.cinema.service.CardService;
 import com.edix.apirest.cinema.service.UserService;
 
@@ -27,14 +26,11 @@ import com.edix.apirest.cinema.service.UserService;
 public class CardsController {
 	
 	@Autowired
-	private CardService tserv;
+	private CardService cserv;
 	
 	@Autowired
 	private UserService userv;
-	
-	@Autowired
-	private UserRepository urepo;
-	
+		
 	// Ir al formulario para añadir tarjeta del Usuario
 	@GetMapping("/alta-tarjeta/{id}")
 	public String altaTarjeta(Model model, @PathVariable(name="id") int  idUsuario) {
@@ -50,7 +46,7 @@ public class CardsController {
 		User user = userv.findById(idUsuario);
 		
 		user.addCard(tarjeta);
-		urepo.save(user);
+		userv.register(user);
 		
 		ratt.addFlashAttribute("mensaje", "<div class=\"alert alert-success\" role=\"alert\">\r\n"
 				+ "  Tarjeta añadida correctamente\r\n"
@@ -65,12 +61,12 @@ public class CardsController {
 		String username = aut.getName();
 		User user = userv.findUserByEmail(username);
 		
-		Card tarjeta = tserv.findCardById(idTarjeta);
+		Card tarjeta = cserv.findCardById(idTarjeta);
 		
 		user.removeCard(tarjeta);
-		urepo.save(user);
+		userv.register(user);
 		
-		List<Card> tarjetas = tserv.cardsByUser(user.getIdUser());
+		List<Card> tarjetas = cserv.cardsByUser(user.getIdUser());
 		model.addAttribute("tarjetasUsuario", tarjetas);
 		
 		model.addAttribute("mensaje", "<div class=\"alert alert-success\" role=\"alert\">\r\n"
@@ -83,7 +79,7 @@ public class CardsController {
 	// Página para ditar una tarjeta
 	@GetMapping("/editar-tarjeta/{id}")
 	public String enviarFormularioEditar(Model model, @PathVariable("id") int idTarjeta) {
-		model.addAttribute("tarjeta", tserv.findCardById(idTarjeta));
+		model.addAttribute("tarjeta", cserv.findCardById(idTarjeta));
 		
 		return "editar-tarjeta";
 	}
@@ -95,13 +91,13 @@ public class CardsController {
 		String username = aut.getName();
 		User user = userv.findUserByEmail(username);
 		
-		if (tserv.findCardById(idTarjeta) == null){
+		if (cserv.findCardById(idTarjeta) == null){
 			model.addAttribute("mensaje", "<div class=\"alert alert-warning\" role=\"alert\">\r\n"
 				+ "  La tarjeta no existe\r\n"
 				+ "</div>");
 		}else{
 			tarjeta.setIdCard(idTarjeta);
-			if (tserv.modifyCard(tarjeta) == 1) {
+			if (cserv.modifyCard(tarjeta) == 1) {
 				model.addAttribute("mensaje", "<div class=\"alert alert-success\" role=\"alert\">\r\n"
 					+ "  Tarjeta editada con éxito\r\n"
 					+ "</div>");
@@ -112,7 +108,7 @@ public class CardsController {
 			}
 		}
 		
-		List<Card> tarjetas = tserv.cardsByUser(user.getIdUser());
+		List<Card> tarjetas = cserv.cardsByUser(user.getIdUser());
 		model.addAttribute("tarjetasUsuario", tarjetas);
 		
 		return "lista-tarjetas";

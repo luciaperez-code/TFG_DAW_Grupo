@@ -28,8 +28,8 @@ public class UserServiceImpl implements UserService{
 
 	// Buscar un usuario por su nombre
 	@Override
-	public User findUserByEmail(String username) {
-		return urepo.buscarPorUsername(username);
+	public User findUserByEmail(String email) {
+		return urepo.buscarPorEmail(email);
 	}
 
 	// Registrar un usuario 
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService{
 		int filas = 0;
 		User user = null;
 		try {
-			user = urepo.getOne(usuario.getIdUser());
+			user = urepo.findById(usuario.getIdUser()).orElse(null);
 			user = usuario;
 			urepo.save(user);
 			filas = 1;
@@ -59,4 +59,17 @@ public class UserServiceImpl implements UserService{
 		return filas;
 	}
 
+	@Override
+	public boolean updateUser(User usuario) {
+		
+		if (findUserByEmail(usuario.getEmail()) != null) {
+			urepo.save(usuario);
+			return true;
+		}else {
+			return false;
+		}
+	
+	}
+	
+	
 }

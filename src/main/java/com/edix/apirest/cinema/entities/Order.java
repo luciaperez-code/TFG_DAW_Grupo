@@ -37,8 +37,8 @@ public class Order implements Serializable {
 	@JoinColumn(name="idUser")
 	private User user;
 	
-	//bi-directional many-to-one association to ProductosEnPedido
-	@OneToMany(mappedBy="pedido", cascade= {CascadeType.PERSIST})
+	//bi-directional many-to-one association to ItemsInOrder
+	@OneToMany(mappedBy="idItemsOrder", cascade= {CascadeType.PERSIST})
 	private List<ItemsInOrder> itemsInOrder;
 	
 	

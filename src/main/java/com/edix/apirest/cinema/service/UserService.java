@@ -20,4 +20,6 @@ public interface UserService {
 	
 	// Modificar un usuario
 	int modificarUsuario(User usuario);
+	
+	boolean updateUser(User usuario);
 }

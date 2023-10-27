@@ -73,7 +73,7 @@ public class ProductServiceImpl implements ProductService{
 		int filasModificadas = 0;
 		Product prod = null;
 		try {
-			prod = prepo.getOne(producto.getIdProduct());
+			prod = prepo.findById(producto.getIdProduct()).orElse(null);
 			prod = producto;
 			prepo.save(prod);
 			filasModificadas = 1;

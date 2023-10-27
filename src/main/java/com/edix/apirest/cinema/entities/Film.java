@@ -2,8 +2,6 @@ package com.edix.apirest.cinema.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.Date;
 import java.util.Objects;
 
@@ -13,8 +11,8 @@ import java.util.Objects;
  * 
  */
 @Entity
-@Table(name="screens")
-@NamedQuery(name="Screen.findAll", query="SELECT p FROM Screen p")
+@Table(name="films")
+@NamedQuery(name="Film.findAll", query="SELECT p FROM Film p")
 public class Film implements Serializable {
 	private static final long serialVersionUID = 1L;
 

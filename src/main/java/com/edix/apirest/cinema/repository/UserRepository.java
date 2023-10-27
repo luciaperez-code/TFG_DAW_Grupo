@@ -11,10 +11,11 @@ import com.edix.apirest.cinema.entities.Card;
 import com.edix.apirest.cinema.entities.User;
 
 public interface UserRepository extends JpaRepository<User, Integer>{
-	@Query("select u from Usuario u where u.username = ?1")
-	public User buscarPorUsername(String username);
+	
+	@Query("select u from User u where u.email = ?1")
+	public User buscarPorEmail(String email);
 		
-	@Query("select u.tarjetas from Usuario u where u.idUsuario = ?1")
+	@Query("select u.cards from User u where u.idUser = ?1")
 	public List<Card> tarjetasPorUsuario(int idUsuario);
 	
 	/*
