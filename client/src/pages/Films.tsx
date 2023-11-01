@@ -1,10 +1,10 @@
 import { Button, Card, Grid, Paper, Image, Group, Text, Badge } from "@mantine/core";
 import data from '../utils/mocks.json'
+import { Link } from "react-router-dom";
 
 export default function Film() {
   const { films } = data
 
-  console.log(films)
   return (
     <Paper w={'60vw'} mx={'auto'} py={'xl'}>
       <Grid justify="space-around" align="stretch">
@@ -23,7 +23,8 @@ export default function Film() {
                 <Badge color="blue">{film.Genre}</Badge>
               </Group>
               <Text size="sm" c={'dimmed'}> {film.Plot}</Text>
-              <Button variant="light" color="blue" fullWidth mt={'md'} radius={'md'}>Ver horarios</Button>
+              <Button variant="light" color="blue" fullWidth mt={'md'} radius={'md'}>
+                <Link to={`${film.Title.split(' ').join('-')}`}>Ver horarios</Link></Button>
             </Card>
           </Grid.Col>
           )
