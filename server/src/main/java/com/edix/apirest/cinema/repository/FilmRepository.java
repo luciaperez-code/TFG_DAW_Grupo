@@ -15,7 +15,10 @@ public interface FilmRepository extends JpaRepository<Film, Integer>{
 	@Query("select f from Film f where f.genre like ?1")
 	public Film findByGenre(String genre);
 
-	@Query("select f from Film f where f.name like ?1")
-	public Film findByName(String nombre);
+	@Query("select f from Film f where f.title like ?1")
+	public List<Film> findByTitle(String nombre);
 	
+	@Query("select f from Film f order by score DESC")
+	public List<Film> orderByScoreDesc();
+
 }

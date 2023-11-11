@@ -21,5 +21,24 @@ public class ProductTypeServiceImpl implements ProductTypeService{
 	public List<ProductType> findAllProductTypes() {
 		return ptrepo.findAll();
 	}
+
+	@Override
+	public ProductType findById(int id) {
+		// TODO Auto-generated method stub
+		return ptrepo.findById(id).orElse(null);
+	}
+
+	@Override
+	public int insertProductType(ProductType pt) {
+		int filasInsertadas = 0;
+		try {
+			ptrepo.save(pt);
+			filasInsertadas = 1;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return filasInsertadas;
+	}
 	
 }

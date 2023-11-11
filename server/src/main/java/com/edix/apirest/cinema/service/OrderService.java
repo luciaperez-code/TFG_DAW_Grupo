@@ -5,7 +5,9 @@ import java.util.List;
 import com.edix.apirest.cinema.entities.Order;
 
 public interface OrderService {
-
+	
+	List<Order> findAll();
+	
 	// Sacar lista de pedidos de un usuario
 	List<Order> ordersByUser(int idUsuario);
 	

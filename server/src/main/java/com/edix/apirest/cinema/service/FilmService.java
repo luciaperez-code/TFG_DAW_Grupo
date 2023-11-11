@@ -7,10 +7,14 @@ import com.edix.apirest.cinema.entities.Screen;
 
 public interface FilmService {
 	
-	// Buscar la tarjetas por su ID
+	List<Film> findAll();
+
 	Film findFilmById(int idFilm);
 	
 	Film findFilmByGenre(String genre);
-	Film findFilmByName(String name);
+
+	List<Film> findFilmByTitle(String name);
+	
+	List<Film> orderByScoreDesc();
 
 }

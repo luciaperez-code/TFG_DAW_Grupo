@@ -20,7 +20,7 @@ public class ProductType implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idProductType;
 
-	private int name;
+	private String name;
 
 
 	public ProductType() {
@@ -34,11 +34,11 @@ public class ProductType implements Serializable {
 		this.idProductType = idProductType;
 	}
 
-	public int getName() {
+	public String getName() {
 		return name;
 	}
 
-	public void setName(int name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 

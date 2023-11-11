@@ -41,4 +41,9 @@ public class OrderServiceImpl implements OrderService{
 	public Order findOrderById(int idPedido) {
 		return orepo.findById(idPedido).orElse(null);
 	}
+
+	@Override
+	public List<Order> findAll() {
+		return orepo.findAll();
+	}
 }

@@ -22,6 +22,23 @@ public class ScreenServiceImpl implements ScreenService{
 		// TODO Auto-generated method stub
 		return srepo.getById(idScreen);
 	}
+
+	@Override
+	public List<Screen> findAll() {
+		// TODO Auto-generated method stub
+		return srepo.findAll();
+	}
+
+	@Override
+	public List<Screen> find3Dscreens() {
+		
+		return srepo.findByScreenType("3D");
+	}
+
+	@Override
+	public List<Screen> findByScreenType(String type) {
+		return srepo.findByScreenType(type);
+	}
 	
 	
 

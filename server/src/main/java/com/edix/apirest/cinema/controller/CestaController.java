@@ -1,54 +1,53 @@
 
-
-package com.edix.apirest.cinema.controller;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpSession;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.edix.apirest.cinema.dtos.LineaPedidoDto;
-import com.edix.apirest.cinema.entities.Order;
-import com.edix.apirest.cinema.entities.Product;
-import com.edix.apirest.cinema.entities.ItemsInOrder;
-import com.edix.apirest.cinema.entities.Card;
-import com.edix.apirest.cinema.entities.User;
-import com.edix.apirest.cinema.repository.ProductRepository;
-import com.edix.apirest.cinema.repository.ProjectionRepository;
-import com.edix.apirest.cinema.service.OrderService;
-import com.edix.apirest.cinema.service.ProductService;
-import com.edix.apirest.cinema.service.CardService;
-import com.edix.apirest.cinema.service.UserService;
- 
-@Controller
-@RequestMapping("/cesta")
-public class CestaController {
-	@Autowired
-	private ProductRepository prodrepo;
-	
-	@Autowired
-	private ProjectionRepository projrepo;
-	
-	@Autowired
-	private CardService tserv;
-	
-	@Autowired
-	private OrderService oserv;
-	
-	@Autowired
-	private UserService userv;
+//package com.edix.apirest.cinema.controller;
+//
+//import java.math.BigDecimal;
+//import java.util.ArrayList;
+//import java.util.Date;
+//import java.util.List;
+//
+//import javax.servlet.http.HttpSession;
+//
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Controller;
+//import org.springframework.ui.Model;
+//import org.springframework.web.bind.annotation.GetMapping;
+//import org.springframework.web.bind.annotation.PathVariable;
+//import org.springframework.web.bind.annotation.PostMapping;
+//import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RequestParam;
+//import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+//
+//import com.edix.apirest.cinema.dtos.LineaPedidoDto;
+//import com.edix.apirest.cinema.entities.Order;
+//import com.edix.apirest.cinema.entities.Product;
+//import com.edix.apirest.cinema.entities.ItemsInOrder;
+//import com.edix.apirest.cinema.entities.Card;
+//import com.edix.apirest.cinema.entities.User;
+//import com.edix.apirest.cinema.repository.ProductRepository;
+//import com.edix.apirest.cinema.repository.ProjectionRepository;
+//import com.edix.apirest.cinema.service.OrderService;
+//import com.edix.apirest.cinema.service.ProductService;
+//import com.edix.apirest.cinema.service.CardService;
+//import com.edix.apirest.cinema.service.UserService;
+// 
+//@Controller
+//@RequestMapping("/cesta")
+//public class CestaController {
+//	@Autowired
+//	private ProductRepository prodrepo;
+//	
+//	@Autowired
+//	private ProjectionRepository projrepo;
+//	
+//	@Autowired
+//	private CardService tserv;
+//	
+//	@Autowired
+//	private OrderService oserv;
+//	
+//	@Autowired
+//	private UserService userv;
 	
 	// Ver la cesta con los productos añadidos
 //	@GetMapping("/ver")
@@ -156,4 +155,4 @@ public class CestaController {
 //		return "redirect:/lista-productos";
 //	}
 	
-}
+//}

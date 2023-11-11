@@ -32,9 +32,22 @@ public class FilmServiceImpl implements FilmService{
 	}
 
 	@Override
-	public Film findFilmByName(String name) {
+	public List<Film> findFilmByTitle(String title) {
 		// TODO Auto-generated method stub
-		return frepo.findByName(name);
+		return frepo.findByTitle(title);
 	}
+
+	@Override
+	public List<Film> findAll() {
+		// TODO Auto-generated method stub
+		return frepo.findAll();
+	}
+
+	@Override
+	public List<Film> orderByScoreDesc() {
+		// TODO Auto-generated method stub
+		return frepo.orderByScoreDesc();
+	}
+
 
 }
