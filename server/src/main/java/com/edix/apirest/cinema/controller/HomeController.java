@@ -1,13 +1,10 @@
 package com.edix.apirest.cinema.controller;
 
 import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,24 +31,5 @@ public class HomeController {
 //		
 //		return "redirect:/";
 //	}
-	
-//	// Mostrar lista Roles
-//	@GetMapping("/lista-roles")
-//	public String verRoles(Model model) {
-//		List<Rol> lista = rserv.todosRoles();
-//		model.addAttribute("listaRoles", lista);
-//			
-//		return "lista-roles";
-//	}
-	
-	// Mostrar lista Usuarios
-	@GetMapping("/lista-usuarios")
-	public String verUsuarios(Model model) {
-		List<User> lista = userv.allUsers();
-		model.addAttribute("listaUsuarios", lista);
 		
-		return "lista-usuarios";
-	}
-
-	
 }

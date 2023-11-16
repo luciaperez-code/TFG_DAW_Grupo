@@ -12,4 +12,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
 	// Selecciona los Orders del cliente que le pasa por ID
 	@Query("select p from Order p where p.user.idUser =?1")
 	public List<Order> findByIdUser(int idUser);
+	
+	// Busca pedidos de un usuario con un status
+	@Query("select p from Order p where p.user.idUser =?1 and p.status = ?2")
+	public List<Order> findByUserAndStatus(int idUser, String status);
 }

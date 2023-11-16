@@ -33,7 +33,7 @@ public class ItemsInOrder implements Serializable {
 	//uni-directional many-to-one association to Product
 	@ManyToOne
 	@JoinColumn(name="idProduct")
-	private Product producto;
+	private Product product;
 	
 	//uni-directional many-to-one association to Projection
 	@ManyToOne
@@ -76,12 +76,12 @@ public class ItemsInOrder implements Serializable {
 		this.order = order;
 	}
 
-	public Product getProducto() {
-		return producto;
+	public Product getProduct() {
+		return product;
 	}
 
-	public void setProducto(Product producto) {
-		this.producto = producto;
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 
 	public Projection getProjection() {
@@ -96,7 +96,7 @@ public class ItemsInOrder implements Serializable {
 	@Override
 	public String toString() {
 		return "ItemsInOrder [idItemsOrder=" + idItemsOrder + ", quantity=" + quantity + ", price=" + price + ", order="
-				+ order + ", producto=" + producto + ", projection=" + projection + "]";
+				+ order + ", product=" + product + ", projection=" + projection + "]";
 	}
 
 	@Override

@@ -11,48 +11,48 @@ public class LineaPedidoDto implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	
-	private int idProducto;
-	private int idProyection;
-	private int cantidad;
-	private double precioVenta;
+	private int idProduct;
+	private int idProjection;
+	private int quantity;
+	private double price;
 	
 	
-	public int getIdProducto() {
-		return idProducto;
+	public int getIdProduct() {
+		return idProduct;
 	}
 	
-	public void setIdProducto(int idProducto) {
-		this.idProducto = idProducto;
+	public void setIdProduct(int idProduct) {
+		this.idProduct = idProduct;
 	}
 	
-	public int getIdProyection() {
-		return idProyection;
+	public int getIdProjection() {
+		return idProjection;
 	}
 	
-	public void setIdProyection(int idProyection) {
-		this.idProyection = idProyection;
+	public void setIdProjection(int idProjection) {
+		this.idProjection = idProjection;
 	}
 	
-	public int getCantidad() {
-		return cantidad;
+	public int getQuantity() {
+		return quantity;
 	}
 	
-	public void setCantidad(int cantidad) {
-		this.cantidad = cantidad;
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 	
-	public double getPrecioVenta() {
-		return precioVenta;
+	public double getPrice() {
+		return price;
 	}
 	
-	public void setPrecioVenta(double precioVenta) {
-		this.precioVenta = precioVenta;
+	public void setPrice(double price) {
+		this.price = price;
 	}
 	
 	@Override
 	public String toString() {
-		return "LineaPedidoDto [idProducto=" + idProducto + ", idProyection=" + idProyection + ", cantidad=" + cantidad
-				+ ", precioVenta=" + precioVenta + "]";
+		return "LineaPedidoDto [idProduct=" + idProduct + ", idProjection=" + idProjection + ", quantity=" + quantity
+				+ ", price=" + price + "]";
 	}
 	
 	

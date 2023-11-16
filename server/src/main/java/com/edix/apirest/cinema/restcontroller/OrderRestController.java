@@ -1,4 +1,4 @@
-package com.edix.apirest.cinema.controller;
+package com.edix.apirest.cinema.restcontroller;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import com.edix.apirest.cinema.service.OrderService;
 
 @RequestMapping("/order")
 @RestController
-public class OrderController {
+public class OrderRestController {
 	
 	@Autowired
 	private OrderService pserv;
@@ -29,11 +29,9 @@ public class OrderController {
 	
 	// Ver el listado de productos
 	@GetMapping("/all/{id}")
-	public String pedidosUsuario(Model model, @PathVariable(name="id") int  idUsuario) {
-		List<Order> pedidos = pserv.ordersByUser(idUsuario);
-		model.addAttribute("pedidosUsuario", pedidos);
-		
-		return "lista-pedidos";
+	public List<Order> pedidosUsuario(Model model, @PathVariable(name="id") int  idUsuario) {
+		List<Order> pedidos = pserv.ordersByUser(idUsuario);		
+		return pedidos;
 	}
 	
 	// Ver un pedido según su ID
