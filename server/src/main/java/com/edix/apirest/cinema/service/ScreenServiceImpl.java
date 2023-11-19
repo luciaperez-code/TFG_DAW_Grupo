@@ -5,11 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.edix.apirest.cinema.entities.Card;
 import com.edix.apirest.cinema.entities.Screen;
-import com.edix.apirest.cinema.repository.CardRepository;
 import com.edix.apirest.cinema.repository.ScreenRepository;
-import com.edix.apirest.cinema.repository.UserRepository;
 
 @Service
 public class ScreenServiceImpl implements ScreenService{
@@ -40,6 +37,17 @@ public class ScreenServiceImpl implements ScreenService{
 		return srepo.findByScreenType(type);
 	}
 	
-	
+	@Override
+	public int insertScreen(Screen screen) {
+		int filasInsertadas = 0;
+		try {
+			srepo.save(screen);
+			filasInsertadas = 1;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return filasInsertadas;
+	}
 
 }

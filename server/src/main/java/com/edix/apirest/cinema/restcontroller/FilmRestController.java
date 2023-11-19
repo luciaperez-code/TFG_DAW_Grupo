@@ -34,12 +34,12 @@ public class FilmRestController {
 		return fserv.findFilmById(idFilm);
 	}
 		
-//	@PostMapping("/add-Film")
-//	public int addFilm(@RequestBody Film Filmo) {
-//		int response = fserv.insertFilm(Filmo);
-//		return response;
-//	}
-//	
+	@PostMapping("/add-film")
+	public int addFilm(@RequestBody Film film) {
+		int response = fserv.insertFilm(film);
+		return response;
+	}
+
 //	// Borrar un Film
 //	@GetMapping("/delete/{id}")
 //	public int delete(@PathVariable(name="id") int  idFilmo) {	

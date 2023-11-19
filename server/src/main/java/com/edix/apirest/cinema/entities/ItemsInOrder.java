@@ -22,7 +22,7 @@ public class ItemsInOrder implements Serializable {
 
 	private int quantity;
 
-	private BigDecimal price;
+	private Double price;
 	
 	//uni-directional many-to-one association to Order
 	//@ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE})
@@ -60,12 +60,12 @@ public class ItemsInOrder implements Serializable {
 		this.quantity = quantity;
 	}
 
-	public BigDecimal getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(BigDecimal price) {
-		this.price = price;
+	public void setPrice(Double double1) {
+		this.price = double1;
 	}
 
 	public Order getOrder() {

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.edix.apirest.cinema.entities.Order;
 import com.edix.apirest.cinema.service.OrderService;
 
-@RequestMapping("/order")
+@RequestMapping("/orders")
 @RestController
 public class OrderRestController {
 	

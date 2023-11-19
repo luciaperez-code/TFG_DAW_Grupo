@@ -2,6 +2,9 @@ package com.edix.apirest.cinema.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
@@ -22,11 +25,13 @@ public class Projection implements Serializable {
 	private int idProjection;
 
 	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
 	private Date startDate;
 	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
 	private Date endDate;
 	
-	private BigDecimal price;
+	private Double price;
 
 	private String occupiedNormalSeats;
 	private String occupiedSpecialSeats;
@@ -69,11 +74,11 @@ public class Projection implements Serializable {
 		this.endDate = endDate;
 	}
 
-	public BigDecimal getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(BigDecimal price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 

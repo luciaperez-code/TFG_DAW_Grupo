@@ -2,6 +2,9 @@ package com.edix.apirest.cinema.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -24,6 +27,7 @@ public class Film implements Serializable {
 	private int year;
 
 	@Temporal(TemporalType.DATE)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private Date released;
 	
 	private String runtime, genre, director, writer, actors, plot, language, country, awards;

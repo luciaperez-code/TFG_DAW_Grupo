@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.edix.apirest.cinema.entities.Screen;
 import com.edix.apirest.cinema.service.ScreenService;
 
-@RequestMapping("/screen")
+@RequestMapping("/screens")
 @RestController
 public class ScreenRestController {
 	
@@ -46,11 +46,11 @@ public class ScreenRestController {
 		return lista;
 	}
 	
-//	@PostMapping("/add")
-//	public int addScreen(@RequestBody Screen Screen) {
-//		int response = sserv.insertScreen(Screen);
-//		return response;
-//	}
+	@PostMapping("/add")
+	public int addScreen(@RequestBody Screen screen) {
+		int response = sserv.insertScreen(screen);
+		return response;
+	}
 	
 //	// Borrar un producto
 //	@GetMapping("/delete-product/{id}")

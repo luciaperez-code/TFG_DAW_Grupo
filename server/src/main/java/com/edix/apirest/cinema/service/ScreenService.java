@@ -13,4 +13,6 @@ public interface ScreenService {
 	List<Screen> find3Dscreens();
 	List<Screen> findByScreenType(String type);
 	
+	int insertScreen(Screen screen);
+
 }

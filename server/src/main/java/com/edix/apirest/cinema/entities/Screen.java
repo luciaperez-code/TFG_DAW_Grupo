@@ -2,6 +2,10 @@ package com.edix.apirest.cinema.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -12,6 +16,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name="screens")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NamedQuery(name="Screen.findAll", query="SELECT p FROM Screen p")
 public class Screen implements Serializable {
 	private static final long serialVersionUID = 1L;

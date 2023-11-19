@@ -17,4 +17,6 @@ public interface FilmService {
 	
 	List<Film> orderByScoreDesc();
 
+	int insertFilm(Film film);
+
 }

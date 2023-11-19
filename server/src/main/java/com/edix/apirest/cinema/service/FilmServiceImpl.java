@@ -5,13 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.edix.apirest.cinema.entities.Card;
 import com.edix.apirest.cinema.entities.Film;
-import com.edix.apirest.cinema.entities.Screen;
-import com.edix.apirest.cinema.repository.CardRepository;
 import com.edix.apirest.cinema.repository.FilmRepository;
-import com.edix.apirest.cinema.repository.ScreenRepository;
-import com.edix.apirest.cinema.repository.UserRepository;
 
 @Service
 public class FilmServiceImpl implements FilmService{
@@ -49,5 +44,18 @@ public class FilmServiceImpl implements FilmService{
 		return frepo.orderByScoreDesc();
 	}
 
-
+	// Insertar un producto
+	@Override
+	public int insertFilm(Film film) {
+		int filasInsertadas = 0;
+		try {
+			frepo.save(film);
+			filasInsertadas = 1;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return filasInsertadas;
+	}
+	
 }

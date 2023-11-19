@@ -40,16 +40,16 @@ public class ProjectionRestController {
 		return pserv.findPrecioByNombre(nombre);
 	}
 	
-	@PostMapping("/add-Projection")
-	public int addProjection(@RequestBody Projection Projectiono) {
-		int response = pserv.insertarProjection(Projectiono);
+	@PostMapping("/add-projection")
+	public int addProjection(@RequestBody Projection projection) {
+		int response = pserv.insertarProjection(projection);
 		return response;
 	}
 	
 	// Borrar un Projection
 	@GetMapping("/delete/{id}")
-	public int delete(@PathVariable(name="id") int  idProjectiono) {	
-		int borrado = pserv.deleteProjection(idProjectiono);
+	public int delete(@PathVariable(name="id") int  idProjection) {	
+		int borrado = pserv.deleteProjection(idProjection);
 		return borrado;
 	}
 	
