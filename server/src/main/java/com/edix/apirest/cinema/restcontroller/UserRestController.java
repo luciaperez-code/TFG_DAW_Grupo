@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -34,6 +36,9 @@ public class UserRestController {
 	
 	@Autowired
 	private CardService tserv;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 		
 	@GetMapping("/all")
 	public List<User> allUsers() {
@@ -51,7 +56,7 @@ public class UserRestController {
 	// Formulario de registro de usuario
 	@PostMapping("/register")
 	public int procRegistrarUsuario(@RequestBody User user) {
-		user.setPassword(com.edix.apirest.cinema.entities.PasswordEncoder.encryptPassword(user.getPassword()));
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setEnabled(1);
 		user.setRegisterDate(new Date());
 					
@@ -93,19 +98,21 @@ public class UserRestController {
 		return tarjetas;
 	}
 	
-//	// Mostrar lista de tarjetas por Usuario
 //	@GetMapping("/login")
-//	public boolean login(@RequestBody User user) {
-//		List<Card> tarjetas = tserv.cardsByUser(idUsuario);						
-//		return tarjetas;
+//	public ResponseEntity<?> login(@RequestBody JwtRequest authenticationRequest) throws Exception {
+//	        authenticate(authenticationRequest.getEmail), authenticationRequest.getPassword());
+//	        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+//	        final String token = jwtUtil.generateToken(userDetails);
+//	        return ResponseEntity.ok(new JwtResponse(token));
+//	    
 //	}
 	
-	// Formatear la fecha de nacimiento
-	@InitBinder
-	public void initBinder(WebDataBinder binder) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		sdf.setLenient(false);
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, false));
-	}
+//	// Formatear la fecha de nacimiento
+//	@InitBinder
+//	public void initBinder(WebDataBinder binder) {
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//		sdf.setLenient(false);
+//		binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, false));
+//	}
 		
 }

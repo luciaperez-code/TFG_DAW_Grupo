@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService{
 	// Buscar un usuario por su nombre
 	@Override
 	public User findUserByEmail(String email) {
-		return urepo.buscarPorEmail(email);
+		return urepo.findByEmail(email);
 	}
 
 	// Registrar un usuario 

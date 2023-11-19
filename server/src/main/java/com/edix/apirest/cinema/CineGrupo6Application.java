@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Uf6ActVentasApplication {
+public class CineGrupo6Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Uf6ActVentasApplication.class, args);
+		SpringApplication.run(CineGrupo6Application.class, args);
 	}
 
 }

@@ -92,11 +92,11 @@ public class OrderServiceImpl implements OrderService{
 		
 		for (LineaPedidoDto ele: lista) {
 			ItemsInOrder pep = new ItemsInOrder();
-			pep.setQuantity(ele.getQuantity());
 			pep.setOrder(p);
 			if(ele.getIdProduct() != 0){
 				pep.setProduct(prepo.findById(ele.getIdProduct()).orElse(null));
 				pep.setPrice(pep.getProduct().getPrice());
+				pep.setQuantity(ele.getQuantity());
 			}
 			if(ele.getIdProjection() != 0){
 				pep.setProjection(pjrepo.findById(ele.getIdProjection()).orElse(null));

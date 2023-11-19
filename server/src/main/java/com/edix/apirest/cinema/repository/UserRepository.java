@@ -13,7 +13,7 @@ import com.edix.apirest.cinema.entities.User;
 public interface UserRepository extends JpaRepository<User, Integer>{
 	
 	@Query("select u from User u where u.email = ?1")
-	public User buscarPorEmail(String email);
+	public User findByEmail(String email);
 		
 	@Query("select u.cards from User u where u.idUser = ?1")
 	public List<Card> tarjetasPorUsuario(int idUsuario);

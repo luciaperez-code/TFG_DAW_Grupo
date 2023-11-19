@@ -102,41 +102,6 @@
 - /add-Projection (@RequestBody Projection)
     (POST) http://localhost:8087/projections/add-projection
     {
-        "idProjection": 1,
-        "startDate": "01-11-2023 18:00",
-        "endDate": "31-12-2023 00:00",
-        "price": 7.50,
-        "occupiedNormalSeats":  "",
-        "occupiedSpecialSeats": "",
-        "film": 
-        {
-            "idFilm": 1,
-            "title": "El Rey León",
-            "year": 1994,
-            "released": "31-12-1993",
-            "runtime": "100min",
-            "genre": "Cartoon",
-            "director": "Rob Minkoff, Roger Allers",
-            "writer": "Walt Disney",
-            "actors": "Simba, Mufasa, Nala, Scar, Zazú",
-            "plot": "Ambientada en la sabana africana donde ha nacido el futuro rey. Simba idolatra a su padre, el rey Mufasa, y se toma muy en serio su propio destino real. Pero en el reino no todos celebran la llegada del nuevo cachorro. Scar, el hermano de Mufasa y antiguo heredero al trono, tiene sus propios planes. La batalla por Pride Rock está asolada por la traición, la tragedia y el drama, y termina con el exilio de Simba. Con la ayuda de un curioso par de nuevos amigos, Simba tendrá que aprender a madurar y a recuperar lo que le pertenece por derecho.",
-            "language": "Español",
-            "country": "Estados Unidos",
-            "awards": "",
-            "score": 4.55,
-            "comingsoon": false,
-            "images": null
-        },
-        "screen":
-        {
-        "idScreen": 1,
-        "screenType": "2D",
-        "normalSeats": "50",
-        "specialSeats": "8"
-        }
-    }
-
-    {
         "startDate": "01-11-2023 18:00",
         "endDate": "31-12-2023 00:00",
         "price": 7.50,
@@ -152,6 +117,7 @@
         }
     }
 - /delete/{id} @PathVariable(idProjection)
+    (GET) http://localhost:8087/projections/delete/2
 - /edit/{id} @RequestBody Projection, @PathVariable(idProjection)
     (POST) http://localhost:8087/projections/edit/2
     {
@@ -231,5 +197,19 @@
 
 
 ### CARDS
-Para ejecutar esta parte del proyecto, será necesario un IDE con una extensión de Spring.
-Después, arrancamos el proyecto y se inicializará la aplicación en el puerto 8087.
+-
+-
+
+### LOGIN
+- /login
+    (POST) http://localhost:8087/login
+    {
+    "email": "yoli@gmail.com",
+    "password": "1234"
+    }
+
+    Respuesta: 
+    {
+    "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5b2xpQGdtYWlsLmNvbSIsImV4cCI6MTcwMDUwODM0NiwiaWF0IjoxNzAwNDIxOTQ2fQ.AkoQAd8IExL2DdTmrxoIdAZrBzmNP9Hfyz6g-jpy2rN0zdm2HlLFtkbuTidUnJe-uQ8gzsi3zTTj_Gp5gn-isQ"
+    }
+    Importante: sólo funciona si el usuario tiene la contraseña encriptada
