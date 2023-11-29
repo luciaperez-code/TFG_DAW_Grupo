@@ -101,6 +101,8 @@ public class OrderServiceImpl implements OrderService{
 			if(ele.getIdProjection() != 0){
 				pep.setProjection(pjrepo.findById(ele.getIdProjection()).orElse(null));
 				pep.setPrice(pep.getProjection().getPrice());
+				String[] normalSeats = pep.getOccupiedNormalSeats();
+				
 			}
 			System.out.println("Linea de pedido: " + pep);
 			listaLP.add(pep);

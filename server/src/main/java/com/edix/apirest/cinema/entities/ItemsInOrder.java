@@ -21,7 +21,9 @@ public class ItemsInOrder implements Serializable {
 	private int idItemsOrder;
 
 	private int quantity;
-
+	private String[] occupiedNormalSeats;
+	private String[] occupiedSpecialSeats;
+	
 	private Double price;
 	
 	//uni-directional many-to-one association to Order
@@ -64,8 +66,8 @@ public class ItemsInOrder implements Serializable {
 		return price;
 	}
 
-	public void setPrice(Double double1) {
-		this.price = double1;
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 
 	public Order getOrder() {
@@ -92,13 +94,30 @@ public class ItemsInOrder implements Serializable {
 		this.projection = projection;
 	}
 
+	public String[] getOccupiedNormalSeats() {
+		return occupiedNormalSeats;
+	}
+
+	public void setOccupiedNormalSeats(String[] occupiedNormalSeats) {
+		this.occupiedNormalSeats = occupiedNormalSeats;
+	}
+
+	public String[] getOccupiedSpecialSeats() {
+		return occupiedSpecialSeats;
+	}
+
+	public void setOccupiedSpecialSeats(String[] occupiedSpecialSeats) {
+		this.occupiedSpecialSeats = occupiedSpecialSeats;
+	}
+
 
 	@Override
 	public String toString() {
-		return "ItemsInOrder [idItemsOrder=" + idItemsOrder + ", quantity=" + quantity + ", price=" + price + ", order="
-				+ order + ", product=" + product + ", projection=" + projection + "]";
+		return "ItemsInOrder [idItemsOrder=" + idItemsOrder + ", quantity=" + quantity + ", occupiedNormalSeats="
+				+ occupiedNormalSeats + ", occupiedSpecialSeats=" + occupiedSpecialSeats + ", price=" + price
+				+ ", order=" + order + ", product=" + product + ", projection=" + projection + "]";
 	}
-
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(idItemsOrder);

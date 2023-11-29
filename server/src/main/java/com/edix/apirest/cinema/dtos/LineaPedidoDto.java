@@ -15,6 +15,8 @@ public class LineaPedidoDto implements Serializable{
 	private int idProjection;
 	private int quantity;
 	private double price;
+	private String occupiedNormalSeats;
+	private String occupiedSpecialSeats;
 	
 	
 	public int getIdProduct() {
@@ -48,13 +50,28 @@ public class LineaPedidoDto implements Serializable{
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	
+
+	public String getOccupiedNormalSeats() {
+		return occupiedNormalSeats;
+	}
+
+	public void setOccupiedNormalSeats(String occupiedNormalSeats) {
+		this.occupiedNormalSeats = occupiedNormalSeats;
+	}
+
+	public String getOccupiedSpecialSeats() {
+		return occupiedSpecialSeats;
+	}
+
+	public void setOccupiedSpecialSeats(String occupiedSpecialSeats) {
+		this.occupiedSpecialSeats = occupiedSpecialSeats;
+	}
+
 	@Override
 	public String toString() {
 		return "LineaPedidoDto [idProduct=" + idProduct + ", idProjection=" + idProjection + ", quantity=" + quantity
-				+ ", price=" + price + "]";
-	}
-	
-	
+				+ ", price=" + price + ", occupiedNormalSeats=" + occupiedNormalSeats + ", occupiedSpecialSeats="
+				+ occupiedSpecialSeats + "]";
+	}	
 
 }

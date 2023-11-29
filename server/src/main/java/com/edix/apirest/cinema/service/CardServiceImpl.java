@@ -51,4 +51,29 @@ public class CardServiceImpl implements CardService{
 		return crepo.findById(idTarjeta).orElse(null);
 	}
 
+	@Override
+	public int insertCard(Card card) {
+		int filasInsertadas = 0;
+		try {
+			crepo.save(card);
+			filasInsertadas = 1;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return filasInsertadas;
+	}
+
+	@Override
+	public int deleteCard(int idCard) {
+		int filasBorradas = 0;
+		try {
+			crepo.deleteById(idCard);
+			filasBorradas=1;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return filasBorradas;
+	}
+
 }

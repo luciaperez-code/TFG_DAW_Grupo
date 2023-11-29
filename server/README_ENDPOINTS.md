@@ -102,11 +102,9 @@
 - /add-Projection (@RequestBody Projection)
     (POST) http://localhost:8087/projections/add-projection
     {
-        "startDate": "01-11-2023 18:00",
+        "startDate": "29-11-2023 18:00",
         "endDate": "31-12-2023 00:00",
-        "price": 7.50,
-        "occupiedNormalSeats":  "",
-        "occupiedSpecialSeats": "",
+        "price": 6.50,
         "film": 
         {
             "idFilm": 1
@@ -196,9 +194,27 @@
 - /buy" @RequestBody lista, card, user
 
 
-### CARDS
--
--
+### CARDS ("/cards")
+- /all
+    (GET) http://localhost:8087/cards/all
+- /add-card
+    (POST) http://localhost:8087/cards/add-card
+    {
+       "number": 5540500001000004,
+       "holderName": "Lucía Pérez",
+       "expirationDate": "31-12-2024",
+       "cvv": 123
+    }
+- /delete-card/{id} @PathVariable("id") int idTarjeta
+    (GET) http://localhost:8087/cards/delete-card/1
+- /edit-card/{id}
+    (POST) http://localhost:8087/cards/edit-card/1
+	{
+        "number": 5540500001000004,
+        "holderName": "Yolanda Carrasco",
+        "expirationDate": "31-12-2025",
+        "cvv": 456
+    }
 
 ### LOGIN
 - /login

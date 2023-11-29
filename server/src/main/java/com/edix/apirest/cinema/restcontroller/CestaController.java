@@ -33,20 +33,20 @@ public class CestaController {
 	}
 	
 	// Guardar una cesta
-	@PostMapping("/addCesta")
-	public Order procAddCesta(@RequestBody List<LineaPedidoDto> lista, User user) {
-		
-		List<Order> listCesta = oserv.ordersByUserAndStatus(user.getIdUser(), "Cesta");
-		Order order = new Order();
-		if (listCesta.size() == 0) {
-			order = oserv.buy(user, lista, null, "Cesta");
-		}else {
-			oserv.deleteOrder(listCesta.get(0).getIdOrder());
-			order = oserv.buy(user, lista, null, "Cesta");
-		}
-		
-		return order;
-	}
+//	@PostMapping("/addCesta")
+//	public Order procAddCesta(@RequestBody List<LineaPedidoDto> lista, User user) {
+//		
+//		List<Order> listCesta = oserv.ordersByUserAndStatus(user.getIdUser(), "Cesta");
+//		Order order = new Order();
+//		if (listCesta.size() == 0) {
+//			order = oserv.buy(user, lista, null, "Cesta");
+//		}else {
+//			oserv.deleteOrder(listCesta.get(0).getIdOrder());
+//			order = oserv.buy(user, lista, null, "Cesta");
+//		}
+//		
+//		return order;
+//	}
 
 	// Formulario para procesar el pedido, el usuario y la tarjeta 
 	@PostMapping("/buy")

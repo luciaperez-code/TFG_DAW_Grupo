@@ -17,4 +17,9 @@ public interface CardService {
 	
 	// Buscar la tarjetas por su ID
 	Card findCardById(int idTarjeta);
+	
+	int insertCard(Card card);
+	
+	int deleteCard(int idCard);
+
 }

@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 //import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.edix.apirest.cinema.entities.Card;
 import com.edix.apirest.cinema.entities.Product;
 import com.edix.apirest.cinema.entities.User;
+import com.edix.apirest.cinema.security.JwtResponse;
+import com.edix.apirest.cinema.security.JwtTokenUtil;
 import com.edix.apirest.cinema.service.CardService;
 import com.edix.apirest.cinema.service.UserService;
 
@@ -32,55 +36,67 @@ public class CardsController {
 	
 	@Autowired
 	private UserService userv;
+	
+
+	@GetMapping("/all")
+	public List<Card> allCards() {
+		 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		 String username = authentication.getName();
+		 List<Card> tarjetas = null;	     
+	     if (username != null) {
+	 		User user = userv.findUserByEmail(username);
+			tarjetas = cserv.cardsByUser(user.getIdUser());
+	     }
+	     
+		return tarjetas;
+	}
+	
+
+	@PostMapping("/add-card")
+	public List<Card> altaTarjeta(@RequestBody Card tarjeta) {
 		
-//	// Ir al formulario para añadir tarjeta del Usuario
-//	@GetMapping("/alta-tarjeta/{id}")
-//	public String altaTarjeta(@PathVariable(name="id") int  idUsuario) {
-//		User user = userv.findById(idUsuario);
-//		return usuario;
-//	}
-//	
-//	// Formulario para añadir tarjeta del Usuario
-//	@PostMapping("/add-card/{id}")
-//	public List<Card> altaTarjeta(@RequestBody Card tarjeta, @PathVariable(name="id") int  idUsuario) {
-//		User user = userv.findById(idUsuario);
-//		
-//		user.addCard(tarjeta);
-//		userv.register(user);
-//		return user.getCards();
-//	}
-//	
-//	// Borrar tarjeta del usuario
-//	@GetMapping("/borrar-tarjeta/{id}")
-//	public List<Card> eliminarTarjeta(Authentication aut, @PathVariable("id") int idTarjeta) {
-//		String username = aut.getName();
-//		User user = userv.findUserByEmail(username);
-//		
-//		Card tarjeta = cserv.findCardById(idTarjeta);
-//		
-//		user.removeCard(tarjeta);
-//		userv.register(user);
-//		
-//		List<Card> tarjetas = cserv.cardsByUser(user.getIdUser());
-//		return tarjetas;
-//	}
-//	
-//	// Página para ditar una tarjeta
-//	@PostMapping("/edit-card/{id}")
-//	public int editCard(@RequestBody Card card, @PathVariable(name="id") int idCard) {
-//		Authentication aut,
-//		String username = aut.getName();
-//		User user = userv.findUserByEmail(username);
-//		if (cserv.findProductById(idCard) == null){
-//			return 0;
-//		}else{
-//			card.setIdProduct(idCard);
-//			if (cserv.modifyProduct(card) == 1) {
-//				return 1;
-//			}else {
-//				return 0;
-//			}
-//	}
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		User user = userv.findUserByEmail(username);
+		user.addCard(tarjeta);
+		userv.modificarUsuario(user);
+		return user.getCards();
+	}
+	
+	// Borrar tarjeta del usuario
+	@GetMapping("/delete-card/{id}")
+	public List<Card> eliminarTarjeta(@PathVariable("id") int idTarjeta) {
+		
+		 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			String username = authentication.getName();
+    	 List<Card> tarjetas = null;
+		
+	     if (username != null) {
+	 		User user = userv.findUserByEmail(username);
+			Card tarjeta = cserv.findCardById(idTarjeta);
+			user.removeCard(tarjeta);
+			userv.modificarUsuario(user);
+			tarjetas = cserv.cardsByUser(user.getIdUser());
+	     }
+				
+		return tarjetas;
+	}
+	
+	// Página para ditar una tarjeta
+	@PostMapping("/edit-card/{id}")
+	public int editCard(@RequestBody Card card, @PathVariable(name="id") int idCard) {
+		
+		if (cserv.findCardById(idCard) == null){
+			return 0;
+		}else{
+			card.setIdCard(idCard);
+			if (cserv.modifyCard(card) == 1) {
+				return 1;
+			}else {
+				return 0;
+			}
+		}
+	}
 	
 	// Formatear la fecha para el formulario
 	@InitBinder
