@@ -13,5 +13,23 @@ export type Film = {
     awards: string,
     score: string,
     comingsoon: boolean,
-    image: string | null
+    images: string | null
+}
+
+export type Screen = {
+    idScreen: number,
+    screenType: "2D" | "3D",
+    normalSeats: string,
+    specialSeats : string
+}
+
+export type Projection = {
+    idProjection : number,
+    startDate: string,
+    endDate: string,
+    price: number,
+    occupiedNormalSeats: string,
+    occupiedSpecialSeats: string,
+    film: Film,
+    screen: Screen
 }

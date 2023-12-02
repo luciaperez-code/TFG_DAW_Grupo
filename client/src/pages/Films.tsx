@@ -16,16 +16,20 @@ export default function Film() {
             <Card shadow="sm" padding={'lg'} radius={'md'} withBorder>
               <Card.Section>
                 <Image
-                  src={film.image}
-                  height={300}
+                  src={film.images}
+                  height={'500'}
+                  fit="contain"
                   alt={`Poster for the film ${film.title}`}
                 />
               </Card.Section>
               <Group position="apart" mt={'md'} mb={'xs'}>
                 <Text fw={500}>{film.title}</Text>
-                <Badge color="blue">{film.genre}</Badge>
+              
               </Group>
-              <Text size="sm" c={'dimmed'}> {film.plot}</Text>
+            {film.genre.split(', ').map((genre: string) => {
+              return <Badge color="blue" key={genre} m={'xs'}>{genre}</Badge>
+            })}
+              <Text size="sm" mt={'xl'} c={'dimmed'}> {film.plot}</Text>
               <Button variant="light" color="blue" fullWidth mt={'md'} radius={'md'}>
                 <Link state={film.idFilm} to={`${film.idFilm}`}>Ver horarios</Link></Button>
             </Card>
