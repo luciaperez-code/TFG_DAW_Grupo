@@ -1,10 +1,12 @@
-import { router } from "config/router/router"
-import { RouterProvider } from "react-router-dom"
+import Router from "config/router/router"
+import { BrowserRouter } from "react-router-dom"
 
 
 function App() {
   return (
-    <RouterProvider router={router} />
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
   )
 }
 

@@ -12,7 +12,7 @@ export default function NotFound() {
           <Text c="dimmed" size="lg" ta="center" className={classes.description}>
             La página a la que intentas acceder no existe. Puede que hayas escrito mal la url, o que la página haya cambiado de dirección.
           </Text>
-          <Group justify="center" mt={'xl'}>
+          <Group position="center" mt={'xl'}>
             <Button size="md">Volver a la cartelera</Button>
           </Group>
         </div>
