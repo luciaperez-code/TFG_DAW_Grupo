@@ -21,14 +21,15 @@ public interface ProjectionService {
 	int deleteProjection(int idProjection);
 	
 	// Insertar un Projectiono
-	int insertarProjection(Projection Projection);
+	int insertarProjection(Projection projection);
 	
 	// Modificar un Projectiono
-	int modifyProjection(Projection Projection);
+	int modifyProjection(Projection projection);
 		
 	// Listad de Projectionos que coincidan con lo que se busca por el nombre
 	List<Projection>buscador(String nombre);
 	
 	double findPrecioByNombre (String nombre);
 	
+	int bookProjection(int idProjection, String[] normalSeats, String[] specialSeats);
 }

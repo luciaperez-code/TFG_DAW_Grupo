@@ -117,4 +117,63 @@ public class ProjectionServiceImpl implements ProjectionService{
 		return prepo.buscadorNombre(nombre);
 	}
 
+
+	@Override
+	public int bookProjection(int idProjection, String[] normalSeats, String[] specialSeats) {
+
+        Projection projection = prepo.findById(idProjection).orElse(null);
+        if (projection == null) 
+        	return 0;
+
+        String updatedNormalSeats = updateReservedSeats(projection.getOccupiedNormalSeats(), normalSeats);
+        if (updatedNormalSeats != null) {
+        	projection.setOccupiedNormalSeats(updatedNormalSeats);
+        }
+        
+        String updatedSpecialSeats = updateReservedSeats(projection.getOccupiedSpecialSeats(), specialSeats);
+        if (updatedSpecialSeats != null) {
+        	projection.setOccupiedSpecialSeats(updatedSpecialSeats);
+        }
+
+        prepo.save(projection);
+        return 1;
+	}
+	
+    private String updateReservedSeats(String currentOccupiedSeats, String[] newReservedSeats) {
+ 
+    	// Veo si newReservedSeats es nulo o vacío
+        if (newReservedSeats == null || newReservedSeats.length == 0) {
+            return currentOccupiedSeats;
+        }
+
+        if (newReservedSeats[0] == null || newReservedSeats[0].isEmpty()) {
+            return currentOccupiedSeats;
+        }
+
+        String[] reservedSeatsArray = newReservedSeats[0].replaceAll("[\\[\\],\\s]", "").split("");
+        if (reservedSeatsArray.length == 0) {
+            return currentOccupiedSeats;
+        }
+
+     // Convierto currentOccupiedSeats a un array de Strings
+        String[] currentSeatsArray = currentOccupiedSeats.replaceAll("[\\[\\],\\s]", "").split("");
+
+        // Aseguro que reservedSeatsArray.length == currentSeatsArray.length
+        if (reservedSeatsArray.length != currentSeatsArray.length) {
+            return currentOccupiedSeats;
+        }
+
+        // Añado los asientos reservados a la cadena de asientos ocupados
+        for (int i = 0; i < reservedSeatsArray.length && i < currentSeatsArray.length; i++) {
+            if ("1".equals(reservedSeatsArray[i])) {
+                currentSeatsArray[i] = "1";
+            }
+        }
+        
+        System.out.println("reservedSeatsArray, nueva reserva -> " + Arrays.toString(reservedSeatsArray));
+        System.out.println("currentSeatsArray, previa reserva -> " + Arrays.toString(currentSeatsArray));
+        
+        return Arrays.toString(currentSeatsArray);
+    }
+    
 }

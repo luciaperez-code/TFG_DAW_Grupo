@@ -22,7 +22,7 @@ public interface OrderService {
 	// Buscar un pedido por su ID
 	Order findOrderById(int idPedido);
 	
-	Order buy(User user, List<LineaPedidoDto>lista, Card card, String status);
+	Order buy(User user, List<LineaPedidoDto>lista, String status);
 	
 	int deleteOrder(int idPedido);
 

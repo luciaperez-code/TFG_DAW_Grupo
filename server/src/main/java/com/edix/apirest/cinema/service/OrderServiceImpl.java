@@ -1,6 +1,7 @@
 package com.edix.apirest.cinema.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import com.edix.apirest.cinema.entities.Card;
 import com.edix.apirest.cinema.entities.ItemsInOrder;
 import com.edix.apirest.cinema.entities.Order;
 import com.edix.apirest.cinema.entities.User;
+import com.edix.apirest.cinema.repository.CardRepository;
 import com.edix.apirest.cinema.repository.OrderRepository;
 import com.edix.apirest.cinema.repository.ProductRepository;
 import com.edix.apirest.cinema.repository.ProjectionRepository;
@@ -27,6 +29,12 @@ public class OrderServiceImpl implements OrderService{
 	
 	@Autowired
 	private ProjectionRepository pjrepo;
+	
+	@Autowired
+	private ProjectionService pjserv;
+	
+	@Autowired
+	private CardRepository crepo;
 
 	// Sacar lista de pedidos de un usuario
 	@Override
@@ -74,7 +82,7 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
-	public Order buy(User user, List<LineaPedidoDto> lista, Card card, String status) {
+	public Order buy(User user, List<LineaPedidoDto> lista, String status) {
 
 		for (LineaPedidoDto ele: lista) {
 			System.out.println("Linea de la compra: " + ele);
@@ -82,39 +90,43 @@ public class OrderServiceImpl implements OrderService{
 
 		System.out.println("Lista => " + lista);
 		
-		Order p = new Order();
-		p.setCreatedDate(new Date());
-		p.setUser(user);
-		if (card != null)
-			p.setCard(card);
+		Order order = new Order();
+		order.setCreatedDate(new Date());
+		order.setUser(user);
+		
 		
 		List<ItemsInOrder> listaLP = new ArrayList<>();
 		
 		for (LineaPedidoDto ele: lista) {
-			ItemsInOrder pep = new ItemsInOrder();
-			pep.setOrder(p);
-			if(ele.getIdProduct() != 0){
-				pep.setProduct(prepo.findById(ele.getIdProduct()).orElse(null));
-				pep.setPrice(pep.getProduct().getPrice());
-				pep.setQuantity(ele.getQuantity());
+			ItemsInOrder items = new ItemsInOrder();
+			items.setOrder(order);
+			
+			if(ele.getIdProduct() != null){
+				items.setProduct(prepo.findById(ele.getIdProduct()).orElse(null));
+				items.setPrice(items.getProduct().getPrice());
+				items.setQuantity(ele.getQuantity());
+				if (items.getProduct().getStock() != 0) {
+					items.getProduct().setStock(items.getProduct().getStock() - ele.getQuantity());
+				}
 			}
-			if(ele.getIdProjection() != 0){
-				pep.setProjection(pjrepo.findById(ele.getIdProjection()).orElse(null));
-				pep.setPrice(pep.getProjection().getPrice());
-				String[] normalSeats = pep.getOccupiedNormalSeats();
-				
+			if(ele.getIdProjection() != null){
+				items.setProjection(pjrepo.findById(ele.getIdProjection()).orElse(null));
+				items.setPrice(items.getProjection().getPrice());
+				String[] normalSeats = new String[]{ele.getOccupiedNormalSeats()};
+				String[] specialSeats = new String[]{ele.getOccupiedSpecialSeats()};
+				pjserv.bookProjection(items.getProjection().getIdProjection(), normalSeats, specialSeats);
+				items.setNormalSeats(Arrays.toString(normalSeats));
+				items.setSpecialSeats(Arrays.toString(specialSeats));
 			}
-			System.out.println("Linea de pedido: " + pep);
-			listaLP.add(pep);
+			order.setCard(crepo.findById(ele.getIdCard()).orElse(null));
+
+			System.out.println("Linea de pedido: " + items);
+			listaLP.add(items);
 		}
+		order.setItemsInOrder(listaLP);
 		
-		 
-		for (int i = 0; i < listaLP.size(); i++) {
-			System.out.println("Elemento " + i + ":" + listaLP.get(i));
-		}
-		
-		System.out.println(p);
-		Order savedOrder = this.createOrder(p, status);		
+//		System.out.println(p);
+		Order savedOrder = this.createOrder(order, status);		
 				
 		return savedOrder;
 	}

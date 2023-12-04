@@ -2,6 +2,10 @@ package com.edix.apirest.cinema.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -21,13 +25,13 @@ public class ItemsInOrder implements Serializable {
 	private int idItemsOrder;
 
 	private int quantity;
-	private String[] occupiedNormalSeats;
-	private String[] occupiedSpecialSeats;
+	private String normalSeats;
+	private String specialSeats;
 	
 	private Double price;
 	
-	//uni-directional many-to-one association to Order
-	//@ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	//bi-directional many-to-one association to Order
+    @JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="idOrder")
 	private Order order;
@@ -94,27 +98,27 @@ public class ItemsInOrder implements Serializable {
 		this.projection = projection;
 	}
 
-	public String[] getOccupiedNormalSeats() {
-		return occupiedNormalSeats;
+	public String getNormalSeats() {
+		return normalSeats;
 	}
 
-	public void setOccupiedNormalSeats(String[] occupiedNormalSeats) {
-		this.occupiedNormalSeats = occupiedNormalSeats;
+	public void setNormalSeats(String normalSeats) {
+		this.normalSeats = normalSeats;
 	}
 
-	public String[] getOccupiedSpecialSeats() {
-		return occupiedSpecialSeats;
+	public String getSpecialSeats() {
+		return specialSeats;
 	}
 
-	public void setOccupiedSpecialSeats(String[] occupiedSpecialSeats) {
-		this.occupiedSpecialSeats = occupiedSpecialSeats;
+	public void setSpecialSeats(String specialSeats) {
+		this.specialSeats = specialSeats;
 	}
 
 
 	@Override
 	public String toString() {
 		return "ItemsInOrder [idItemsOrder=" + idItemsOrder + ", quantity=" + quantity + ", occupiedNormalSeats="
-				+ occupiedNormalSeats + ", occupiedSpecialSeats=" + occupiedSpecialSeats + ", price=" + price
+				+ normalSeats + ", occupiedSpecialSeats=" + specialSeats + ", price=" + price
 				+ ", order=" + order + ", product=" + product + ", projection=" + projection + "]";
 	}
 	

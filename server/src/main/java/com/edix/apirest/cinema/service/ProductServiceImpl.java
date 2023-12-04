@@ -89,9 +89,6 @@ public class ProductServiceImpl implements ProductService{
 		return prepo.buscador(nombre);
 	}
 
-
-	// API REST
-
 	@Override
 	public Product buscadorNombre(String nombre) {
 		return prepo.buscadorNombre(nombre);
