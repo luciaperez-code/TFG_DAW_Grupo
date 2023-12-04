@@ -13,7 +13,7 @@ export default function Film() {
       <Grid justify="space-around" align="stretch">
         {films!.map(film => {
           return (<Grid.Col span={4} key={film.idFilm}>
-            <Card shadow="sm" padding={'lg'} radius={'md'} withBorder>
+            <Card shadow="lg" padding={'lg'} radius={'md'}>
               <Card.Section>
                 <Image
                   src={film.images}

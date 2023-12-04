@@ -33,3 +33,23 @@ export type Projection = {
     film: Film,
     screen: Screen
 }
+
+export type Card = {
+    idCard: number,
+    number: number,
+    holderName: string,
+    expirationDate: string,
+    cvv: number
+}
+
+export type User = {
+    idUser: number,
+    name: string,
+    surname: string,
+    birthDate: string,
+    email: string,
+    password: string,
+    enabled: number,
+    registerDate: string
+    cards: Card[]
+}
