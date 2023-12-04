@@ -189,9 +189,44 @@
 
 
 ### CESTA ("/shopping")
-- getCesta @RequestBody user
-- /addCesta" @RequestBody lista, user
-- /buy" @RequestBody lista, card, user
+- getCesta 
+- /addCesta" @RequestBody lista
+- /buy" @RequestBody lista, card
+    (POST) http://localhost:8087/shopping/buy
+
+    Sólo proyección:
+    [
+        {
+            "idProjection": 5,
+            "occupiedNormalSeats": "[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]",
+            "occupiedSpecialSeats": "[0, 1, 0, 0, 0, 0, 0, 0, 0, 0]",
+            "idCard":1
+        }
+    ]
+
+    Sólo producto:
+    [
+        {
+            "idProduct": 1,
+            "quantity": 4,
+            "idCard":1
+        }
+    ]
+
+    Ambas:
+    [
+        {
+            "idProjection": 5,
+            "occupiedNormalSeats": "[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]",
+            "occupiedSpecialSeats": "[0, 0, 0, 0, 1, 0, 0, 0, 0, 0]",
+            "idCard":1
+        },
+        {
+            "idProduct": 1,
+            "quantity": 4,
+            "idCard":1
+        }
+    ]
 
 
 ### CARDS ("/cards")

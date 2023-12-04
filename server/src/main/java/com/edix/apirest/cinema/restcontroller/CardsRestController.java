@@ -1,4 +1,4 @@
-package com.edix.apirest.cinema.controller;
+package com.edix.apirest.cinema.restcontroller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,7 +29,7 @@ import com.edix.apirest.cinema.service.UserService;
 
 @RequestMapping("/cards")
 @RestController
-public class CardsController {
+public class CardsRestController {
 	
 	@Autowired
 	private CardService cserv;
