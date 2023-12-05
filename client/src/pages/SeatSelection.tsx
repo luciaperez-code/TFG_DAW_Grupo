@@ -1,11 +1,13 @@
-import { Button, Center, Grid, Group, Paper, SimpleGrid, Space, Title, UnstyledButton } from "@mantine/core";
+import { Button, Center, Grid, Group, Paper, Title, UnstyledButton } from "@mantine/core";
 import { IconArmchair2, IconArmchair2Off, IconSofa, IconSofaOff } from "@tabler/icons-react";
 import { Projection } from "lib/definitions";
+import { useGlobalStore } from "lib/global-store";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Pill from "ui/Pill";
 
 export default function SeatSelelection(){
+    const store = useGlobalStore()
     const projection: Projection =  useLocation().state
     const occupiedSpecialSeats = JSON.parse(projection.occupiedSpecialSeats)
     const occupiedNormalSeats = JSON.parse(projection.occupiedNormalSeats)
@@ -30,16 +32,27 @@ export default function SeatSelelection(){
         }
     }
 
+
+    function updateCart(){
+        const cart = store.store.cart
+        const newCart = {...cart, film: {
+            selectedSeats,
+            selectedSpecialSeats,
+            projection
+        }}
+        store.handleStore('cart', newCart)
+    }
+
     return (
         <>
-        <Paper w={'70vw'} mx={'auto'} h={'10vh'} withBorder style={{backgroundColor: '#808080'}} radius={'xl'} mb={'7vh'}>
+        <Paper w={'70vw'} mx={'auto'} h={'10vh'} withBorder style={{backgroundColor: '#808080'}} mt={'xl'} radius={'xl'} mb={'7vh'}>
             <Center h={'100%'}>
                 <Title c={'white'}>Pantalla</Title>
             </Center>
         </Paper>
         <Group position="right" w={'70vw'} mx={'auto'} my={'xl'}>
             <Paper  radius="md" p={'xl'} shadow="md">
-                <Pill text={`${selectedSeats.length}`} title="Nº Asientos seleccionados"></Pill>
+                <Pill text={`${selectedSeats.length + selectedSpecialSeats.length}`} title="Nº Asientos seleccionados"></Pill>
                 <Pill text={`${(selectedSeats.length + selectedSpecialSeats.length) * projection.price}€`} title="Total"></Pill>
                 </Paper>           
         </Group>
@@ -68,7 +81,7 @@ export default function SeatSelelection(){
             )}
         </Grid>
         <Group w={'70vw'} mt={'xl'} mx={'auto'} position="center">
-            <Button size="lg" color="teal" radius={'lg'} mt={'xl'}>Comprar</Button>
+            <Button size="lg" color="teal" radius={'lg'} mt={'xl'} onClick={updateCart}><Link to={'/alimentacion'} style={{color: 'white', textDecoration: 'none'}}>Comprar entradas</Link></Button>
         </Group>
         </>
     )

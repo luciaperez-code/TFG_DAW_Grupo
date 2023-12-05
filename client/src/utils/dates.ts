@@ -2,7 +2,7 @@ export function getDate(date: string | number | Date) {
     let _date: Date;
   
     if (typeof date === 'string') {
-      const match = date.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
+      const match = date.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/); //Checking if string have correct format
   
       if (!match) {
         throw new Error('Invalid date format. Please use "DD-MM-YYYY".');

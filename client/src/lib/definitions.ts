@@ -53,3 +53,35 @@ export type User = {
     registerDate: string
     cards: Card[]
 }
+
+export type Consumable = {
+    idProduct: number,
+    description: string,
+    image: string | null,
+    name : string,
+    price: number,
+    productType: {
+        idProductType: number,
+        name: string
+    },
+    stock: number
+}
+
+
+export type Store = {
+    loggedUser? : User,
+    cart: {
+        films:
+            {
+                selectedSpecialSeats: number,
+                selectedSeats: number,
+                projection: Projection
+            }[]
+        
+        consumables: {
+            consumable: Consumable,
+            cuantity: number
+        }[],
+        totalAmount: number
+    }
+}

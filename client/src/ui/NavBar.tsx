@@ -1,6 +1,6 @@
-import { Button, Drawer, Group, Paper, PasswordInput, TextInput, Title } from "@mantine/core";
+import { Button, Drawer, Group, Paper, PasswordInput, TextInput, Title, UnstyledButton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { useGetUsers, useLogin } from "api/users";
+import { useLogin } from "api/users";
 import { User } from "lib/definitions";
 import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
@@ -13,12 +13,10 @@ export default function NavBar(){
 
     const [loggedUser, setLoggedUser] = useState<User>()
 
-    const {data: users} = useGetUsers()
 
-    const {mutate} = useLogin()
+    const {mutate, data: user} = useLogin()
 
 
-    console.log({loggedUser})
 
     useEffect(() => {
         if (!opened) {
@@ -32,22 +30,25 @@ export default function NavBar(){
     }, [email,password])
 
 
-    async function handleLogin(){
-        const result  = await mutate({email: email!, password: password!}) as unknown as  {data?:any}
-        if (result.data.token){
-            console.log('inside!!')
-           setLoggedUser(users!.filter(user => user.email == email)[0])
+    useEffect(() => { //Displaying the result of the log in
+        if (user instanceof Object && 'name' in user){
+            setLoggedUser(user)
+            close()
         } else {
             setError('Credenciales incorrectas')
         }
+    }, [user])
+
+    async function handleLogin(){
+       mutate({email: email!, password: password!}) as unknown as User | undefined
     }
 
     return (
         <>
             <Paper w={'90vw'} h={'5vh'} mt={'md'} mx={'auto'} radius={'xl'} style={{background: 'linear-gradient(166deg, rgba(34,195,107,1) 0%, rgba(45,119,253,1) 100%)'}}>
-                <Group position="center" w={'100%'}>
-                    <Link to={'/peliculas'}>Películas</Link>
-                    <Button onClick={open}>{loggedUser ? loggedUser.name : 'Log In'}</Button>
+                <Group position="center" w={'100%'} spacing={'xl'}>
+                    <Link to={'/peliculas'} style={{color: 'white', textDecoration: 'none', marginTop:'1.5vh'}}>Películas</Link>
+                    <UnstyledButton mt={'1.5vh'} c="white" onClick={open}>{loggedUser ? loggedUser.name : 'Log In'}</UnstyledButton>
                 </Group>
                 <Drawer opened={opened} onClose={close} position="right">
                     <Title align="center">Iniciar sesión</Title>
@@ -57,7 +58,6 @@ export default function NavBar(){
                     <Button disabled={!email || !password} type="submit" onClick={handleLogin} radius={'md'} ml={'xl'} mt={'xl'}>Acceder</Button>                    
                 </Drawer>
             </Paper>
-            
             <Outlet/>
         </>
     )
