@@ -1,10 +1,10 @@
-package com.edix.apirest.ventas;
+package com.edix.apirest.cinema;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Uf6ActVentasApplicationTests {
+class CinemaApplicationTests {
 
 	@Test
 	void contextLoads() {
