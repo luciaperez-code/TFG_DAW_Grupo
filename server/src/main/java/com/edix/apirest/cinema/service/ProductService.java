@@ -1,36 +1,22 @@
 package com.edix.apirest.cinema.service;
 
-import java.math.BigDecimal;
-import java.util.List;
-
+import com.edix.apirest.cinema.entities.JSONResponse;
 import com.edix.apirest.cinema.entities.Product;
 
 public interface ProductService {
 
-	// Lista de todos los productos
-	List<Product> findAllProducts();
+	JSONResponse findAllProducts();
+	JSONResponse getProductByType(int idProductType);
+	JSONResponse getProductByRelatedFilm(int idFilm);
+	JSONResponse findProductById(int idProduct);
 	
-	// Buscar un producto por su ID
-	Product findProductById(int idProduct);
-	
-	// Ordenación de productos
-	List<Product> OrderByPriceAsc();
-	List<Product> OrderByPriceDesc();
+	JSONResponse OrderByPriceAsc();
+	JSONResponse OrderByPriceDesc();
 
-	// Borrar un producto
-	int deleteProduct(int idProduct);
-	
-	// Insertar un producto
-	int insertarProducto(Product product);
-	
-	// Modificar un producto
-	int modifyProduct(Product product);
+	JSONResponse addProduct(Product product);
+	JSONResponse deleteProduct(int idProduct);
+	JSONResponse modifyProduct(Product product, int idProduct);
 		
-	// Listad de productos que coincidan con lo que se busca por el nombre
-	List<Product>buscador(String nombre);
-
-	// API REST
-	Product buscadorNombre(String nombre);
-	BigDecimal findPrecioByNombre (String nombre);
+	JSONResponse buscador(String nombre);
 	
 }

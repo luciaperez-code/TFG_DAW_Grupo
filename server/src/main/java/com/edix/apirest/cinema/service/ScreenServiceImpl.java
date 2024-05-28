@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edix.apirest.cinema.entities.JSONResponse;
 import com.edix.apirest.cinema.entities.Screen;
 import com.edix.apirest.cinema.repository.ScreenRepository;
+import com.edix.apirest.cinema.utils.Utils;
 
 @Service
 public class ScreenServiceImpl implements ScreenService{
@@ -15,39 +17,70 @@ public class ScreenServiceImpl implements ScreenService{
 	private ScreenRepository srepo;
 
 	@Override
-	public Screen findScreenById(int idScreen) {
-		// TODO Auto-generated method stub
-		return srepo.getById(idScreen);
+	public JSONResponse findScreenById(int idScreen) {
+		JSONResponse response = new JSONResponse();
+		Screen screenById = srepo.getById(idScreen);
+		if (screenById != null) {
+			Utils.createJSONResponseOk(response, screenById);
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "No hay salas con este ID :(");
+		}
+		return response;
 	}
 
 	@Override
-	public List<Screen> findAll() {
-		// TODO Auto-generated method stub
-		return srepo.findAll();
+	public JSONResponse findAll() {
+		JSONResponse response = new JSONResponse();
+		List<Screen> allScreens = srepo.findAll();
+		if (allScreens != null) {
+			Utils.createJSONResponseOk(response, allScreens);
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "No hay salas :(");
+		}
+		return response;
 	}
 
 	@Override
-	public List<Screen> find3Dscreens() {
-		
-		return srepo.findByScreenType("3D");
-	}
-
-	@Override
-	public List<Screen> findByScreenType(String type) {
-		return srepo.findByScreenType(type);
+	public JSONResponse findByScreenType(String type) {
+		JSONResponse response = new JSONResponse();
+		List<Screen> screensByType = srepo.findByScreenType(type);
+		if (screensByType != null) {
+			Utils.createJSONResponseOk(response, screensByType);
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "No hay salas de este tipo :(");
+		}
+		return response;
 	}
 	
 	@Override
-	public int insertScreen(Screen screen) {
-		int filasInsertadas = 0;
-		try {
-			srepo.save(screen);
-			filasInsertadas = 1;
+	public JSONResponse insertScreen(Screen screen) {
+		JSONResponse response = new JSONResponse();
+		Utils.createJSONResponseOk(response, srepo.save(screen));
+		return response;
+	}
+	
+	@Override
+	public JSONResponse deleteScreen(int idScreen) {
+		JSONResponse response = new JSONResponse();
+		Screen screenToDelete = srepo.findById(idScreen).orElse(null);
+		if (screenToDelete != null) {
+			srepo.delete(screenToDelete);
+			Utils.createJSONResponseOk(response, "Sala borrada con éxito");
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "No hay salas con ese ID :(");
 		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		return filasInsertadas;
+		return response;
 	}
 
+	@Override
+	public JSONResponse modifyScreen(Screen screen, int idScreen) {
+		JSONResponse response = new JSONResponse();
+		if (srepo.findById(idScreen) != null) {
+			screen.setIdScreen(idScreen);
+			Utils.createJSONResponseOk(response, srepo.save(screen));
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "No hay salas con ese ID :(");
+		}
+		return response;
+	}
 }

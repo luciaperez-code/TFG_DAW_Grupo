@@ -1,18 +1,16 @@
 package com.edix.apirest.cinema.service;
 
-import java.util.List;
-
+import com.edix.apirest.cinema.entities.JSONResponse;
 import com.edix.apirest.cinema.entities.Screen;
 
 public interface ScreenService {
 	
-	Screen findScreenById(int idScreen);
+	JSONResponse findScreenById(int idScreen);
+	JSONResponse findAll();
+	JSONResponse findByScreenType(String type);
 	
-	List<Screen> findAll();
-	
-	List<Screen> find3Dscreens();
-	List<Screen> findByScreenType(String type);
-	
-	int insertScreen(Screen screen);
+	JSONResponse insertScreen(Screen screen);
+	JSONResponse deleteScreen(int idScreen);
+	JSONResponse modifyScreen(Screen screen, int idScreen);
 
 }

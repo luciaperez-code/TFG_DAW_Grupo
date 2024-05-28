@@ -6,6 +6,8 @@ import javax.persistence.*;
 import org.hibernate.annotations.Proxy;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,16 +35,13 @@ public class User implements Serializable {
 	private Date birthDate;
 	
 	private String email;
+	
+    @JsonIgnore
 	private String password;
 	private int enabled;
 
 	@Temporal(TemporalType.DATE)
 	private Date registerDate;
-	
-//	//uni-directional many-to-one association to Rol
-//	@ManyToOne
-//	@JoinColumn(name="id_rol")
-//	private Rol rol;
 	
 	//uni-directional many-to-many association to Cards
 	@ManyToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE})
@@ -56,6 +55,11 @@ public class User implements Serializable {
 			}
 		)
 	private List<Card> cards;
+	
+	//uni-directional many-to-one association to Rol
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="id_role")
+	private Role role;
 
 	public User() {
 	}
@@ -144,6 +148,14 @@ public class User implements Serializable {
 		cards.remove(card);
 	}
 	
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(email);
@@ -165,7 +177,7 @@ public class User implements Serializable {
 	public String toString() {
 		return "User [idUser=" + idUser + ", name=" + name + ", surname=" + surname + ", birthDate=" + birthDate
 				+ ", email=" + email + ", password=" + password + ", enabled=" + enabled + ", registerDate="
-				+ registerDate + ", cards=" + cards + "]";
+				+ registerDate + ", cards=" + cards + ", role=" + role + "]";
 	}
 	
 }

@@ -1,79 +1,84 @@
+
 package com.edix.apirest.cinema.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.edix.apirest.cinema.entities.Card;
+import com.edix.apirest.cinema.entities.JSONResponse;
+import com.edix.apirest.cinema.entities.User;
 import com.edix.apirest.cinema.repository.CardRepository;
 import com.edix.apirest.cinema.repository.UserRepository;
+import com.edix.apirest.cinema.utils.Utils;
 
 @Service
-public class CardServiceImpl implements CardService{
+public class CardServiceImpl implements CardService {
 
 	@Autowired
 	private CardRepository crepo;
-	
+
 	@Autowired
 	private UserRepository urepo;
-	
-	// Sacar el listado de tarjetas
-	@Override
-	public List<Card> findAllCards() {
-		return crepo.findAll();
-	}
 
-	// Sacar el listado de tarjetas de un usuario
-	@Override
-	public List<Card> cardsByUser(int idUsuario) {
-		return urepo.tarjetasPorUsuario(idUsuario);
-	}
+	@Autowired
+	private UserService userv;
 
-	// Modificar la tarjetas que te pasan
 	@Override
-	public int modifyCard(Card tarjeta) {
-		int filasModificadas = 0;
-		
-		try {
-			crepo.save(tarjeta);
-			filasModificadas = 1;
-		}catch(Exception e) {
-			e.printStackTrace();
+	public JSONResponse cardsByUser(Authentication authentication) {
+		JSONResponse response = new JSONResponse();
+		String username = authentication.getName();
+		if (username != null) {
+			User user = userv.userByEmail(username);
+			Utils.createJSONResponseOk(response, urepo.tarjetasPorUsuario(user.getIdUser()));
 		}
-		
-		return filasModificadas;
-	}
-
-	// Buscar la tarjetas por su ID
-	@Override
-	public Card findCardById(int idTarjeta) {
-		return crepo.findById(idTarjeta).orElse(null);
+		return response;
 	}
 
 	@Override
-	public int insertCard(Card card) {
-		int filasInsertadas = 0;
-		try {
+	public JSONResponse addCard(Authentication authentication, Card card) {
+		JSONResponse response = new JSONResponse();
+		String username = authentication.getName();
+		User user = userv.userByEmail(username);
+		user.addCard(card);
+		urepo.save(user);
+		Utils.createJSONResponseOk(response, user.getCards());
+
+		return response;
+	}
+
+	@Override
+	public JSONResponse deleteCard(Authentication authentication, int idCard) {
+		JSONResponse response = new JSONResponse();
+		String username = authentication.getName();
+		if (username != null) {
+			User user = userv.userByEmail(username);
+			Card card = crepo.findById(idCard).orElse(null);
+			if (card != null) {
+				user.removeCard(card);
+				urepo.save(user);
+				crepo.delete(card);
+				Utils.createJSONResponseOk(response, urepo.tarjetasPorUsuario(user.getIdUser()));
+			} else {
+				Utils.createJSONResponseFailed(response, 404, "Tarjeta no encontrada con ese ID");
+			}
+		}
+
+		return response;
+	}
+
+	@Override
+	public JSONResponse modifyCard(Card card, int idCard) {
+		JSONResponse response = new JSONResponse();
+
+		if (crepo.findById(idCard) == null) {
+			Utils.createJSONResponseFailed(response, 404, "Tarjeta no encontrada con ese ID");
+		} else {
+			card.setIdCard(idCard);
 			crepo.save(card);
-			filasInsertadas = 1;
+			Utils.createJSONResponseOk(response, crepo.findById(idCard));
 		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		return filasInsertadas;
-	}
-
-	@Override
-	public int deleteCard(int idCard) {
-		int filasBorradas = 0;
-		try {
-			crepo.deleteById(idCard);
-			filasBorradas=1;
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		return filasBorradas;
+		return response;
 	}
 
 }

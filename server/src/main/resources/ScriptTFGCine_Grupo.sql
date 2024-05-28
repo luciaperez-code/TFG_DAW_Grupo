@@ -2,6 +2,11 @@ DROP DATABASE IF EXISTS cinemaRL;
 CREATE DATABASE cinemaRL CHARACTER SET utf8mb4;
 USE cinemaRL;
 
+CREATE TABLE roles (
+  id_role INT PRIMARY KEY,
+  name VARCHAR(255)
+);
+
 CREATE TABLE users (
   idUser INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(20) NOT NULL,
@@ -10,7 +15,9 @@ CREATE TABLE users (
   email VARCHAR(50) NOT NULL UNIQUE,
   password VARCHAR(200) NOT NULL,
   enabled INT(1) NOT NULL DEFAULT '1',
-  registerDate DATE
+  registerDate DATE,
+  id_role INT DEFAULT 2,
+  FOREIGN KEY (id_role) REFERENCES roles(id_role)
 );
 
 CREATE TABLE cards (
@@ -68,8 +75,9 @@ CREATE TABLE films(
 
 CREATE TABLE projections (
   idProjection INT AUTO_INCREMENT PRIMARY KEY,
-  startDate DATE NOT NULL,
-  endDate DATE NOT NULL,
+  date DATE NOT NULL,
+  startTime DATE NOT NULL,
+  endTime DATE NOT NULL,
   price DEC(9,2),
   occupiedNormalSeats VARCHAR(500),
   occupiedSpecialSeats VARCHAR(500),
@@ -92,7 +100,9 @@ CREATE TABLE products (
   price DEC(9,2),
   stock INT,
   idProductType INT NOT NULL,
+  idRelatedFilm INT,
   foreign key(idProductType) references product_type(idProductType)
+  FOREIGN KEY (idRelatedFilm) REFERENCES films(idFilm)
 );
 
 CREATE TABLE items_in_order (
@@ -113,13 +123,28 @@ CREATE USER cinema IDENTIFIED BY 'cinema';
 grant all privileges on cinemaRL.* to cinema; 
 FLUSH PRIVILEGES;
 
+
+--INSERTO ROLES
+INSERT INTO roles (id_role, name) VALUES (1, 'ADMIN'), (2, 'CLIENT');
+
 -- INSERTAR USUARIOS
 -- select * from cinemaRL.users;
 INSERT INTO users (idUser, name, surname, birthdate, email, password) values (1, 'Lucia', 'Perez', timestamp '2000-09-09 00:00' ,'lucia@gmail.com', '1234');-- INSERT INTO usuarios VALUES(2, 'Juan', 'Gómez', 'López', '1963-03-17', 'jgomez@gmail.com', 'jgomez','$2a$10$aMS69IPQGlbZYjxvcJuZGuVDvCS/qJh5JDjBajWbTvHns8DfT7tMO', 1,'2023-01-17', 2); 
 
--- INSERTAR PRODUCTOS
-INSERT INTO product_type VALUES (1, 'Comida');
-INSERT INTO products VALUES (1, 'Palomitas', null, 'Riquísimas palomitas saladas', 4.5, 200, 1);
-
 --Cambios finales:
 --ALTER TABLE cinemarl.cards MODIFY number bigint;
+
+-- INSERT PRODUCT TYPES
+INSERT INTO product_type VALUES (1, 'Comida');
+INSERT INTO product_type VALUES (2, 'Merchandising');
+
+--INSERT PRODUCTS
+INSERT INTO `cinemarl`.`products` (`idProduct`, `name`, `image`, `description`, `price`, `stock`, `idProductType`) VALUES ('1', 'Palomitas pequeñas', 'Palomitas_pequeña', 'Riquísimas palomitas saladas tamaño pequeño', '4.50', '187', '1');
+INSERT INTO `cinemarl`.`products` (`idProduct`, `name`, `image`, `description`, `price`, `stock`, `idProductType`) VALUES ('2', 'Toblerone', 'Palomitas_grande', 'Ñamyyy chocolate', '2.50', '200', '1');
+INSERT INTO `cinemarl`.`products` (`idProduct`, `name`, `image`, `description`, `price`, `stock`, `idProductType`) VALUES ('3', 'Palomitas grandes', 'Palomitas_grande', 'Palomitas saladas tamaño grande', '7.00', '200', '1');
+INSERT INTO `cinemarl`.`products` (`idProduct`, `name`, `image`, `description`, `price`, `stock`, `idProductType`) VALUES ('4', 'Palomitas grandes con 2 bebidas', 'Palomitasgrandes_2bebidas', 'Palomitas saladas tamaño grande con dos bebidas grandes', '14.00', '0', '1');
+INSERT INTO `cinemarl`.`products` (`idProduct`, `name`, `image`, `description`, `price`, `stock`, `idProductType`) VALUES ('5', 'Chucherías', 'chuches', 'Paquete Cinema Mix Fini, 250g', '3.00', '0', '1');
+INSERT INTO `cinemarl`.`products` (`idProduct`, `name`, `image`, `description`, `price`, `stock`, `idProductType`) VALUES ('6', 'Combo palomitas con bebida y perrito', 'Combo_perrito', 'Combo especial: palomitas grandes, bebida grande y perrito caliente recién hecho', '12.00', '0', '1');
+INSERT INTO `cinemarl`.`products` (`idProduct`, `name`, `image`, `description`, `price`, `stock`, `idProductType`, `idRelatedFilm`) VALUES ('7', 'Póster Reino del planeta de los Simios', 'Poster_reinoPlanetaSimios', 'Tamaño: 1m x 70cm', '6.99', '100', '2', '2');
+INSERT INTO `cinemarl`.`products` (`idProduct`, `name`, `image`, `description`, `price`, `stock`, `idProductType`) VALUES ('8', 'Póster Garfield: la película', 'Poster_garfieldPelicula', 'Tamaño: 1m x 70cm', '6.99', '100', '2');
+

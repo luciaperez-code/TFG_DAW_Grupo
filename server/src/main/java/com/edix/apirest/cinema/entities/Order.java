@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -42,10 +43,10 @@ public class Order implements Serializable {
 	private User user;
 	
 	//bi-directional many-to-one association to ItemsInOrder
-	@OneToMany(mappedBy="idItemsOrder", cascade= {CascadeType.PERSIST})
+//	@OneToMany(mappedBy="idItemsOrder", cascade= {CascadeType.PERSIST})
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	private List<ItemsInOrder> itemsInOrder;
-	
-	
+		
 	public Order() {
 	}
 
@@ -88,6 +89,12 @@ public class Order implements Serializable {
 	public void setUser(User idUser) {
 		this.user = idUser;
 	}
+	
+    @Transient
+    @JsonProperty("idUser")
+    public int getUserId() {
+        return user != null ? user.getIdUser() : null;
+    }
 
 	public List<ItemsInOrder> getItemsInOrder() {
 		return itemsInOrder;
@@ -97,12 +104,15 @@ public class Order implements Serializable {
 		this.itemsInOrder = itemsInOrder;
 	}
 
-
+    public void addItem(ItemsInOrder item) {
+        itemsInOrder.add(item);
+        item.setOrder(this);
+    }
 
 	@Override
 	public String toString() {
 		return "Order [idOrder=" + idOrder + ", createdDate=" + createdDate + ", status=" + status + ", card=" + card
-				+ ", user=" + user + ", itemsInOrder=" + itemsInOrder + "]";
+				+ ", user=" + user + "]";
 	}
 	
 	

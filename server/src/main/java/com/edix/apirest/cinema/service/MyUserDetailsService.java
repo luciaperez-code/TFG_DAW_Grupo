@@ -1,8 +1,11 @@
 package com.edix.apirest.cinema.service;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,7 +26,13 @@ public class MyUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("Usuario no encontrado: " + username);
         }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), new ArrayList<>());
+        
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        String roleName = "ROLE_" + user.getRole().getName().toUpperCase();
+        System.out.println("Loading role: " + roleName);  // Línea de depuración
+        grantedAuthorities.add(new SimpleGrantedAuthority(roleName));
+
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
     }
 }
 

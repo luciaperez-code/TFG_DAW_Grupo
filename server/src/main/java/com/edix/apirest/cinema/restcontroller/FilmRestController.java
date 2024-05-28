@@ -1,8 +1,5 @@
 package com.edix.apirest.cinema.restcontroller;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edix.apirest.cinema.entities.Film;
+import com.edix.apirest.cinema.entities.JSONResponse;
 import com.edix.apirest.cinema.service.FilmService;
+import com.edix.apirest.cinema.utils.Utils;
 
 @RequestMapping("/films")
 @RestController
@@ -22,52 +21,81 @@ public class FilmRestController {
 	@Autowired
 	private FilmService fserv;
 	
-	// Ver la lista de Films
 	@GetMapping("/all")
-	public List<Film> vertodos() {
-		return fserv.findAll();
+	public JSONResponse getAllFilms() {
+		JSONResponse response = new JSONResponse();
+		try {
+			response = fserv.findAll();
+		} catch (Exception e) {
+			Utils.createJSONResponseError(response, "getAllFilms", this.getClass().getSimpleName(), e);
+		}
+		return response;
 	}
 	
-	// Ver Film según su ID
+	@GetMapping("/allReleasedFilms")
+	public JSONResponse getAllReleasedFilms() {
+		JSONResponse response = new JSONResponse();
+		try {
+			response = fserv.findAllReleasedFilms();
+		} catch (Exception e) {
+			Utils.createJSONResponseError(response, "getAllReleasedFilms", this.getClass().getSimpleName(), e);
+		}
+		return response;
+	}
+	
 	@GetMapping("/{id}")
-	public Film verUno(@PathVariable("id") int idFilm) {
-		return fserv.findFilmById(idFilm);
+	public JSONResponse getFilmById(@PathVariable("id") int idFilm) {
+		JSONResponse response = new JSONResponse();
+		try {
+			response = fserv.findFilmById(idFilm);
+		} catch (Exception e) {
+			Utils.createJSONResponseError(response, "getFilmById", this.getClass().getSimpleName(), e);
+		}
+		return response;
 	}
 		
 	@PostMapping("/add-film")
-	public int addFilm(@RequestBody Film film) {
-		int response = fserv.insertFilm(film);
+	public JSONResponse addFilm(@RequestBody Film film) {
+		JSONResponse response = new JSONResponse();
+		try {
+			response = fserv.insertFilm(film);
+		} catch (Exception e) {
+			Utils.createJSONResponseError(response, "addFilm", this.getClass().getSimpleName(), e);
+		}
 		return response;
 	}
 
-//	// Borrar un Film
-//	@GetMapping("/delete/{id}")
-//	public int delete(@PathVariable(name="id") int  idFilmo) {	
-//		int borrado = fserv.deleteFilm(idFilmo);
-//		return borrado;
-//	}
-//	
-//	// Página para editar el Film
-//	@PostMapping("/edit/{id}")
-//	public int editFilm(@RequestBody Film Film, @PathVariable(name="id") int idFilm) {
-//
-//		if (fserv.findFilmById(idFilm) == null){
-//			return 0;
-//		}else{
-//			Film.setIdFilm(idFilm);
-//			if (fserv.modifyFilm(Film) == 1) {
-//				return 1;
-//			}else {
-//				return 0;
-//			}
-//		}
-//	}
+	@GetMapping("/delete-film/{id}")
+	public JSONResponse deleteFilm(@PathVariable(name="id") int  idFilm) {
+		JSONResponse response = new JSONResponse();
+		try {
+			response = fserv.deleteFilm(idFilm);
+		} catch (Exception e) {
+			Utils.createJSONResponseError(response, "deleteFilm", this.getClass().getSimpleName(), e);
+		}
+		return response;
+	}
 	
-	// Buscador de Films
+	@PostMapping("/edit-film/{id}")
+	public JSONResponse editFilm(@RequestBody Film film, @PathVariable(name="id") int idFilm) {
+		JSONResponse response = new JSONResponse();
+		try {
+			response = fserv.editFilm(film, idFilm);
+		} catch (Exception e) {
+			Utils.createJSONResponseError(response, "editFilm", this.getClass().getSimpleName(), e);
+		}
+		return response;
+	}
+	
 	@GetMapping("/search")
-	public List<Film> buscadorNombre (@RequestParam("title") String title) {
-		List<Film>lista = fserv.findFilmByTitle("%" + title + "%");
-		return lista;
+	public JSONResponse buscadorNombre (@RequestParam("title") String title) {
+		JSONResponse response = new JSONResponse();
+		try {
+			response = fserv.findFilmByTitle(title);
+		} catch (Exception e) {
+			Utils.createJSONResponseError(response, "getFilmById", this.getClass().getSimpleName(), e);
+		}
+		return response;
 	}
 
 	

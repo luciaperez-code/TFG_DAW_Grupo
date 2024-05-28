@@ -1,25 +1,18 @@
 package com.edix.apirest.cinema.service;
 
-import java.util.List;
-
+import com.edix.apirest.cinema.dtos.UserRegisterDTO;
+import com.edix.apirest.cinema.entities.JSONResponse;
 import com.edix.apirest.cinema.entities.User;
 
 public interface UserService {
 	
-	// Lista de todos los usuarios
-	List<User> allUsers();
+	JSONResponse allUsers();
+	JSONResponse findById(int idUsuario);
+	JSONResponse findUserByEmail(String email);
+	User userByEmail(String email);
 	
-	// Buscar un usuario por su ID
-	User findById(int idUsuario);
-	
-	// Buscar un usuario por su nombre
-	User findUserByEmail(String email);
-	
-	// Registrar un usuario 
-	boolean register(User usuario);
-	
-	// Modificar un usuario
-	int modificarUsuario(User usuario);
-	
-	boolean updateUser(User usuario);
+	JSONResponse register(UserRegisterDTO userDTO) throws Exception;
+	JSONResponse deleteUser(int idUser);
+	JSONResponse editUser(UserRegisterDTO usuario, int idUser);
+	JSONResponse disableUser(int idUser);
 }

@@ -1,19 +1,20 @@
 package com.edix.apirest.cinema.restcontroller;
 
-import java.math.BigDecimal;
-import java.util.List;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.edix.apirest.cinema.entities.JSONResponse;
 import com.edix.apirest.cinema.entities.Projection;
 import com.edix.apirest.cinema.service.ProjectionService;
+import com.edix.apirest.cinema.utils.Utils;
 
 @RequestMapping("/projections")
 @RestController
@@ -22,71 +23,84 @@ public class ProjectionRestController {
 	@Autowired
 	private ProjectionService pserv;
 	
-	// Ver la lista de Projections
 	@GetMapping("/all")
-	public List<Projection> vertodos() {
-		return pserv.findAllProjections();
-	}
-	
-	// Ver un Projection según su ID
-	@GetMapping("/{id}")
-	public Projection verUno(@PathVariable("id") int idProjection) {
-		return pserv.findProjectionById(idProjection);
-	}
-	
-	// Ver el precio del Projection que se pase
-	@GetMapping("/verPrecio/{name}")
-	public double getPrecioByName(@PathVariable("name") String nombre) {
-		return pserv.findPrecioByNombre(nombre);
-	}
-	
-	@PostMapping("/add-projection")
-	public int addProjection(@RequestBody Projection projection) {
-		int response = pserv.insertarProjection(projection);
+	public JSONResponse vertodos() {
+		JSONResponse response = new JSONResponse();
+		try {
+			response = pserv.findAllProjections();
+		}catch (Exception e) {
+			Utils.createJSONResponseError(response, "findProjectionById", this.getClass().getSimpleName(), e);
+		}
 		return response;
 	}
 	
-	// Borrar un Projection
-	@GetMapping("/delete/{id}")
-	public int delete(@PathVariable(name="id") int  idProjection) {	
-		int borrado = pserv.deleteProjection(idProjection);
-		return borrado;
+	@GetMapping("/{id}")
+	public JSONResponse findProjectionById(@PathVariable("id") int idProjection) {
+		JSONResponse response = new JSONResponse();
+		try {
+			response = pserv.findProjectionById(idProjection);
+		}catch (Exception e) {
+			Utils.createJSONResponseError(response, "findProjectionById", this.getClass().getSimpleName(), e);
+		}
+		return response;
+
+	}
+	
+	// Ver un Projection según su ID
+	@GetMapping("/idFilm/{idFilm}")
+	public JSONResponse findProjectionByFilmId(@PathVariable("idFilm") int idFilm) {
+		JSONResponse response = new JSONResponse();
+		try {
+			response = pserv.findProjectionByFilm(idFilm);
+		}catch (Exception e) {
+			Utils.createJSONResponseError(response, "findProjectionByFilmId", this.getClass().getSimpleName(), e);
+		}
+		return response;
+	}
+	
+	@GetMapping("/date/{date}")
+	public JSONResponse getProjectionsByDate (@PathVariable(name="date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date  date) {	
+		JSONResponse response = new JSONResponse();
+		try {
+			response = pserv.getProjectionByDate(date);
+		}catch (Exception e) {
+			Utils.createJSONResponseError(response, "getProjectionsByDate", this.getClass().getSimpleName(), e);
+		}
+		return response;
+	}
+	
+	@PostMapping("/add-projection")
+	public JSONResponse addProjection(@RequestBody Projection projection) {
+		JSONResponse response = new JSONResponse();
+		try {
+			response = pserv.insertarProjection(projection);
+		}catch (Exception e) {
+			Utils.createJSONResponseError(response, "addProjection", this.getClass().getSimpleName(), e);
+		}
+		return response;
+	}
+	
+	@GetMapping("/delete-projection/{id}")
+	public JSONResponse deleteProjection(@PathVariable(name="id") int  idProjection) {	
+		JSONResponse response = new JSONResponse();
+		try {
+			response = pserv.deleteProjection(idProjection);
+		}catch (Exception e) {
+			Utils.createJSONResponseError(response, "deleteProjection", this.getClass().getSimpleName(), e);
+		}
+		return response;
 	}
 	
 	// Página para editar el Projection
-	@PostMapping("/edit/{id}")
-	public int enviarFormularioEditar(@RequestBody Projection Projection, @PathVariable(name="id") int idProjection) {
-
-		if (pserv.findProjectionById(idProjection) == null){
-			return 0;
-		}else{
-			Projection.setIdProjection(idProjection);
-			if (pserv.modifyProjection(Projection) == 1) {
-				return 1;
-			}else {
-				return 0;
-			}
+	@PostMapping("/edit-projection/{id}")
+	public JSONResponse enviarFormularioEditar(@RequestBody Projection projection, @PathVariable(name="id") int idProjection) {
+		JSONResponse response = new JSONResponse();
+		try {
+			response = pserv.modifyProjection(projection, idProjection);
+		}catch (Exception e) {
+			Utils.createJSONResponseError(response, "deleteProjection", this.getClass().getSimpleName(), e);
 		}
-	}
-	
-	// Buscador de Projections
-	@GetMapping("/search")
-	public List<Projection> buscadorNombre (@RequestParam("nombre") String nombre) {
-		List<Projection>lista = pserv.buscador("%" + nombre + "%");
-		return lista;
-	}
-	
-	@GetMapping("/list-projections/priceAsc")
-	public List<Projection> orderByPriceAsc() {
-		List<Projection> lista = pserv.OrderByPriceAsc();				
-		return lista;
-	}
-	
-	// Ordenar Projections Desc
-	@GetMapping("/list-projections/priceDesc")
-	public List<Projection> orderByPriceDesc() {
-		List<Projection> lista = pserv.OrderByPriceDesc();
-		return lista;
+		return response;
 	}
 	
 }

@@ -1,22 +1,17 @@
 package com.edix.apirest.cinema.service;
 
-import java.util.List;
-
 import com.edix.apirest.cinema.entities.Film;
-import com.edix.apirest.cinema.entities.Screen;
+import com.edix.apirest.cinema.entities.JSONResponse;
 
 public interface FilmService {
 	
-	List<Film> findAll();
-
-	Film findFilmById(int idFilm);
-	
+	JSONResponse findAll();
+	JSONResponse findAllReleasedFilms();
+	JSONResponse findFilmById(int idFilm);
+	JSONResponse findFilmByTitle(String name);
 	Film findFilmByGenre(String genre);
 
-	List<Film> findFilmByTitle(String name);
-	
-	List<Film> orderByScoreDesc();
-
-	int insertFilm(Film film);
-
+	JSONResponse insertFilm(Film film);
+	JSONResponse deleteFilm(int idFilm);
+	JSONResponse editFilm(Film film, int idFilm);
 }

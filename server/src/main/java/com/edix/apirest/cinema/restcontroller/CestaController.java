@@ -6,21 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edix.apirest.cinema.dtos.LineaPedidoDto;
-import com.edix.apirest.cinema.entities.Order;
 import com.edix.apirest.cinema.entities.Card;
-import com.edix.apirest.cinema.entities.User;
+import com.edix.apirest.cinema.entities.JSONResponse;
 import com.edix.apirest.cinema.service.OrderService;
-import com.edix.apirest.cinema.service.UserService;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.edix.apirest.cinema.utils.Utils;
  
 @RestController
 @RequestMapping("/shopping")
@@ -28,26 +23,32 @@ public class CestaController {
 	
 	@Autowired
 	private OrderService oserv;
+
+	@GetMapping("/getCesta")
+	public JSONResponse getCesta() {
+		JSONResponse response = new JSONResponse();
+		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			response = oserv.getCesta(authentication);	
+		} catch (Exception e) {
+			Utils.createJSONResponseError(response, "getCesta", this.getClass().getSimpleName(), e);
+		}
+		return response;	
+	}
 	
-	@Autowired
-	private UserService userv;
-	
-	// Ver la cesta con los productos añadidos
-//	@GetMapping("/getCesta")
-//	public List<Order> verCesta() {
-//		
-// 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		String username = authentication.getName();
-//		User user = userv.findUserByEmail(username);
-//
-//		List<Order> listCesta = oserv.ordersByUserAndStatus(user.getIdUser(), "Cesta");
-//		return listCesta;
-//	}
-//	
-//	// Guardar una cesta
-//	@PostMapping("/addBasket")
-//	public Order addBasket(@RequestBody List<LineaPedidoDto> lista) {
-//		
+
+	@PostMapping("/addBasket")
+	public JSONResponse addBasket(@RequestBody List<LineaPedidoDto> lista) {
+		JSONResponse response = new JSONResponse();
+		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			response = oserv.addBasket(authentication, lista);	
+		} catch (Exception e) {
+			Utils.createJSONResponseError(response, "buy", this.getClass().getSimpleName(), e);
+			System.out.println(e.getMessage());
+		}
+		return response;	
+		
 //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //		String username = authentication.getName();
 //		User user = userv.findUserByEmail(username);
@@ -63,23 +64,18 @@ public class CestaController {
 //			}
 //		}		
 //		return order;
-//	}
+	}
 
-	// Formulario para procesar el pedido, el usuario logado y la tarjeta 
 	@PostMapping("/buy")
-	public Order buy(@RequestBody List<LineaPedidoDto> lista) {
-		
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String username = authentication.getName();
-		User user = userv.findUserByEmail(username);
-		
-	    if (username != null) {
-			Order order = oserv.buy(user, lista, "Closed");	
-			return order;
-	    }else {
-	    	return null;
-	    }
-		
+	public JSONResponse buy(@RequestBody List<LineaPedidoDto> lista, Card card) {
+		JSONResponse response = new JSONResponse();
+		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			response = oserv.buy(authentication);	
+		} catch (Exception e) {
+			Utils.createJSONResponseError(response, "buy", this.getClass().getSimpleName(), e);
+		}
+		return response;		
 	}
 
 

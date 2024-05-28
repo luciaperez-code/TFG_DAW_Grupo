@@ -1,25 +1,15 @@
 package com.edix.apirest.cinema.service;
 
-import java.util.List;
+import org.springframework.security.core.Authentication;
 
 import com.edix.apirest.cinema.entities.Card;
+import com.edix.apirest.cinema.entities.JSONResponse;
 
 public interface CardService {
-
-	// Sacar el listado de tarjetas
-	List<Card> findAllCards();
 	
-	// Sacar el listado de tarjetas de un usuario
-	List<Card> cardsByUser(int idUsuario);
-	
-	// Modificar la tarjetas que te pasan
-	int modifyCard(Card tarjeta);
-	
-	// Buscar la tarjetas por su ID
-	Card findCardById(int idTarjeta);
-	
-	int insertCard(Card card);
-	
-	int deleteCard(int idCard);
+	JSONResponse cardsByUser(Authentication authentication);
+	JSONResponse addCard(Authentication authentication, Card card);
+	JSONResponse deleteCard(Authentication authentication, int idCard);
+	JSONResponse modifyCard(Card tarjeta, int idCard);
 
 }

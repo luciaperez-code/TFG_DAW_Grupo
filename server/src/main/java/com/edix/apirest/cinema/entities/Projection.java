@@ -23,13 +23,17 @@ public class Projection implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idProjection;
-
+	
+	@Temporal(TemporalType.DATE)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	private Date date;
+	
 	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
-	private Date startDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+	private Date startTime;
 	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
-	private Date endDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+	private Date endTime;
 	
 	private Double price;
 
@@ -39,6 +43,7 @@ public class Projection implements Serializable {
 	//uni-directional many-to-one association to Film
 	@ManyToOne
 	@JoinColumn(name="idFilm")
+	
 	private Film film;
 	
 	//uni-directional many-to-one association to Screen
@@ -58,21 +63,35 @@ public class Projection implements Serializable {
 		this.idProjection = idProjection;
 	}
 
-	public Date getStartDate() {
-		return startDate;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
-	public Date getEndDate() {
-		return endDate;
+
+	public Date getStartTime() {
+		return startTime;
 	}
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
 	}
+
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+
 
 	public Double getPrice() {
 		return price;
@@ -114,12 +133,11 @@ public class Projection implements Serializable {
 		this.screen = screen;
 	}
 
-	
 	@Override
 	public String toString() {
-		return "Projection [idProjection=" + idProjection + ", startDate=" + startDate + ", endDate=" + endDate
-				+ ", price=" + price + ", occupiedNormalSeats=" + occupiedNormalSeats + ", occupiedSpecialSeats="
-				+ occupiedSpecialSeats + ", film=" + film + ", screen=" + screen + "]";
+		return "Projection [idProjection=" + idProjection + ", date=" + date + ", startTime=" + startTime + ", endTime="
+				+ endTime + ", price=" + price + ", occupiedNormalSeats=" + occupiedNormalSeats
+				+ ", occupiedSpecialSeats=" + occupiedSpecialSeats + ", film=" + film + ", screen=" + screen + "]";
 	}
 
 	@Override

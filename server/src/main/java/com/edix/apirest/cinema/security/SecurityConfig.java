@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.edix.apirest.cinema.service.MyUserDetailsService;
-import com.edix.apirest.cinema.security.JwtRequestFilter;
 
 @EnableWebSecurity
 @Configuration
@@ -42,21 +42,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			// Para que funcionen los formularios
+		    .cors().and()
 			.csrf().disable()
 			.authorizeRequests()
 			// Los directorios estáticos no requieren autenticacion
 			.antMatchers("/rest/demo-bcrypt/**").permitAll()
 			
-			// Las vistas públicas no requieren autenticación
-			.antMatchers("/", "/films/**", "/products/**", "/producttype/**","/projections/**", "/screens/**", "/users/**", "/login").permitAll()
-			// Las autorizaciones sobre urls para ROLES
+            .antMatchers("/films/add-film", "/films/delete-film", "/films/edit-film").hasRole("ADMIN")
+            .antMatchers("/products/add-product", "/products/delete-product", "/products/edit-product").hasRole("ADMIN")
+            .antMatchers("/producttype/add-productType", "/producttype/delete-productType", "/producttype/edit-productType").hasRole("ADMIN")
+            .antMatchers("/projections/add-projection", "/projections/delete-projection", "/projections/edit-projection").hasRole("ADMIN")
+            .antMatchers("/screens/add-screen", "/screens/delete-screen", "/screens/edit-screen").hasRole("ADMIN")
+            
+            //Vistas públicas
+			.antMatchers("/", "/films/**", "/products/**", "/producttype/**","/projections/**", "/screens/**", "/users/register", "/login").permitAll()
+			.antMatchers("/users/**").hasRole("ADMIN")
+            .antMatchers("/orders/allOrders", "/orders/user/*").hasRole("ADMIN")
 //			.antMatchers("/lista-productos/editar-producto/**").hasAnyAuthority("Admin")
-//			.antMatchers("/lista-productos/borrar-producto/**").hasAnyAuthority("Admin")
 //			.antMatchers("/lista-usuarios").hasAnyAuthority("Admin")
-//			.antMatchers("/lista-roles").hasAnyAuthority("Admin")
 //			.antMatchers("/gracias").hasAnyAuthority("Cliente", "Admin")
 			
 			// Todas las demás URLs de la Aplicación requieren autenticación
+		    .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+		    .antMatchers(HttpMethod.POST, "/**").authenticated()
 			.anyRequest().authenticated()
 			
             .and()
@@ -71,7 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         	http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         
 	}
-	
+		
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();

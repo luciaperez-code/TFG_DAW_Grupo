@@ -4,6 +4,8 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Date;
 import java.util.Objects;
@@ -16,16 +18,20 @@ import java.util.Objects;
 @Entity
 @Table(name="films")
 @NamedQuery(name="Film.findAll", query="SELECT p FROM Film p")
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Film implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idFilm;
-
+	
 	private String title;
 	private int year;
-
+	
+	private String rated;
+	
 	@Temporal(TemporalType.DATE)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private Date released;
@@ -67,6 +73,15 @@ public class Film implements Serializable {
 
 	public void setYear(int year) {
 		this.year = year;
+	}
+
+	public String getRated() {
+		return rated;
+	}
+
+
+	public void setRated(String rated) {
+		this.rated = rated;
 	}
 
 
@@ -220,11 +235,10 @@ public class Film implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Film [idFilm=" + idFilm + ", title=" + title + ", year=" + year + ", released=" + released
-				+ ", runtime=" + runtime + ", genre=" + genre + ", director=" + director + ", writer=" + writer
-				+ ", actors=" + actors + ", plot=" + plot + ", language=" + language + ", country=" + country
+		return "Film [idFilm=" + idFilm + ", title=" + title + ", year=" + year + ", rated=" + rated + ", released="
+				+ released + ", runtime=" + runtime + ", genre=" + genre + ", director=" + director + ", writer="
+				+ writer + ", actors=" + actors + ", plot=" + plot + ", language=" + language + ", country=" + country
 				+ ", awards=" + awards + ", score=" + score + ", comingsoon=" + comingsoon + ", images=" + images + "]";
 	}
-	
 	
 }

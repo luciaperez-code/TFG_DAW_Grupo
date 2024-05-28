@@ -1,49 +1,32 @@
 package com.edix.apirest.cinema.restcontroller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.edix.apirest.cinema.entities.JSONResponse;
 import com.edix.apirest.cinema.security.JwtRequest;
-import com.edix.apirest.cinema.security.JwtResponse;
-import com.edix.apirest.cinema.security.JwtTokenUtil;
-import com.edix.apirest.cinema.service.MyUserDetailsService;
+import com.edix.apirest.cinema.service.AuthenticationService;
+import com.edix.apirest.cinema.utils.Utils;
 
 @RestController
 public class AuthRestController {
 
-	@Autowired
-    private AuthenticationManager authenticationManager;
-
     @Autowired
-    private MyUserDetailsService userDetailsService;
+    private AuthenticationService authService;
 
-    @Autowired
-    private JwtTokenUtil jwtUtil;
 
     @PostMapping("/login")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-        authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
-        final String token = jwtUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new JwtResponse(token));
+    public JSONResponse createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+        JSONResponse response = new JSONResponse();
+    	try{
+    		response = authService.authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
+        }catch (Exception e){
+        	Utils.createJSONResponseError(response, "authenticate", this.getClass().getSimpleName(), e);
+        }
+    	return response;
     }
 
-    private void authenticate(String email, String password) throws Exception {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-        } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
-        } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
-        }
-    }
 	
 }

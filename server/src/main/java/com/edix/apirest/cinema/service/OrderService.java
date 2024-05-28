@@ -2,28 +2,21 @@ package com.edix.apirest.cinema.service;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+
 import com.edix.apirest.cinema.dtos.LineaPedidoDto;
-import com.edix.apirest.cinema.entities.Card;
-import com.edix.apirest.cinema.entities.Order;
-import com.edix.apirest.cinema.entities.User;
+import com.edix.apirest.cinema.entities.JSONResponse;
 
 public interface OrderService {
 	
-	List<Order> findAll();
+	JSONResponse findAll();
+	JSONResponse findOrdersByAuthenticatedUser(Authentication authentication);
+	JSONResponse ordersByUser(int idUsuario);
+	JSONResponse findOrderById(int idPedido);
+	JSONResponse ordersByUserAndStatus(int idUsuario, String status);
+	JSONResponse getCesta(Authentication authentication);
 	
-	// Sacar lista de pedidos de un usuario
-	List<Order> ordersByUser(int idUsuario);
-	
-	List<Order> ordersByUserAndStatus(int idUsuario, String status);
-	
-	// Dar de alta un pedido
-	Order createOrder(Order pedido, String estado);
-	
-	// Buscar un pedido por su ID
-	Order findOrderById(int idPedido);
-	
-	Order buy(User user, List<LineaPedidoDto>lista, String status);
-	
-	int deleteOrder(int idPedido);
-
+	JSONResponse buy(Authentication auth);
+	JSONResponse deleteOrder(int idPedido);
+	JSONResponse addBasket(Authentication auth, List<LineaPedidoDto> lp);
 }

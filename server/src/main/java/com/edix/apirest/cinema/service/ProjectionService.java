@@ -1,35 +1,20 @@
 package com.edix.apirest.cinema.service;
 
-import java.math.BigDecimal;
-import java.util.List;
+import java.util.Date;
 
+import com.edix.apirest.cinema.entities.JSONResponse;
 import com.edix.apirest.cinema.entities.Projection;
 
 public interface ProjectionService {
 
-	// Lista de todos los Projectionos
-	List<Projection> findAllProjections();
-	
-	// Buscar un Projectiono por su ID
-	Projection findProjectionById(int idProjection);
-	
-	// Ordenación de Projectionos
-	List<Projection> OrderByPriceAsc();
-	List<Projection> OrderByPriceDesc();
+	JSONResponse findAllProjections();
+	JSONResponse findProjectionById(int idProjection);
+	JSONResponse findProjectionByFilm(int idFilm);
+	JSONResponse getProjectionByDate(Date date);
 
-	// Borrar un Projectiono
-	int deleteProjection(int idProjection);
-	
-	// Insertar un Projectiono
-	int insertarProjection(Projection projection);
-	
-	// Modificar un Projectiono
-	int modifyProjection(Projection projection);
-		
-	// Listad de Projectionos que coincidan con lo que se busca por el nombre
-	List<Projection>buscador(String nombre);
-	
-	double findPrecioByNombre (String nombre);
-	
-	int bookProjection(int idProjection, String[] normalSeats, String[] specialSeats);
+	JSONResponse insertarProjection(Projection projection);
+	JSONResponse deleteProjection(int idProjection);
+	JSONResponse modifyProjection(Projection projection, int idProjection);
+				
+	JSONResponse bookProjection(int idProjection, String normalSeats, String specialSeats);
 }

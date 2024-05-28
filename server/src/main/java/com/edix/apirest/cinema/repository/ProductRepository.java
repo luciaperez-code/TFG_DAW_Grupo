@@ -19,11 +19,16 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
 	@Query("select p from Product p where p.name like ?1")
 	public List<Product>buscador(String name);
 
-	// API REST
 	@Query("select p from Product p where p.name like ?1")
 	public Product buscadorNombre(String name);
 
 	@Query("select p.price from Product p where p.name like ?1")
 	public BigDecimal findPriceByName(String nombre);
+	
+	@Query("select p from Product p where p.productType.idProductType like ?1")
+	public List<Product> getProductByType(int idProductType);
+	
+	@Query("select p from Product p where p.film.idFilm like ?1")
+	public List<Product> getProductByRelatedFilm(int idFilm);
 	
 }

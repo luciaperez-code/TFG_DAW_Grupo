@@ -1,27 +1,18 @@
 package com.edix.apirest.cinema.restcontroller;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.edix.apirest.cinema.entities.Card;
-import com.edix.apirest.cinema.entities.User;
-import com.edix.apirest.cinema.service.CardService;
+import com.edix.apirest.cinema.dtos.UserRegisterDTO;
+import com.edix.apirest.cinema.entities.JSONResponse;
+import com.edix.apirest.cinema.service.AuthenticationService;
 import com.edix.apirest.cinema.service.UserService;
+import com.edix.apirest.cinema.utils.Utils;
 
 @RequestMapping("/users")
 @RestController
@@ -32,87 +23,78 @@ public class UserRestController {
 	
 	@Autowired
 	private UserService userv;
-	
-	
+
 	@Autowired
-	private CardService tserv;
-	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private AuthenticationService authService;
 		
 	@GetMapping("/all")
-	public List<User> allUsers() {
-		List<User> users = userv.allUsers();
-		return users;
+	public JSONResponse allUsers() {
+		JSONResponse response = new JSONResponse();
+		try {
+			response = userv.allUsers();
+		} catch (Exception e) {
+			Utils.createJSONResponseError(response, "findUserById", this.getClass().getSimpleName(), e);
+		}
+		return response;
 	}
 	
-	// Mostrar datos personales del Usuario
 	@GetMapping("/{id}")
-	public User datosUsuario(@PathVariable(name="id") int  idUsuario) {
-		User user = userv.findById(idUsuario);
-		return user;
+	public JSONResponse findUserById(@PathVariable(name="id") int  idUsuario) {
+		JSONResponse response = new JSONResponse();
+		try {
+			response = userv.findById(idUsuario);
+		} catch (Exception e) {
+			Utils.createJSONResponseError(response, "findUserById", this.getClass().getSimpleName(), e);
+		}
+		return response;
 	}
 	
-	// Formulario de registro de usuario
+	@GetMapping("/email/{email}")
+	public JSONResponse findUserByEmail(@PathVariable(name="email") String  email) {
+		JSONResponse response = new JSONResponse();
+		try {
+			response = userv.findUserByEmail(email);
+		} catch (Exception e) {
+			Utils.createJSONResponseError(response, "findUserByEmail", this.getClass().getSimpleName(), e);
+		}
+		return response;
+	}
+	
 	@PostMapping("/register")
-	public int procRegistrarUsuario(@RequestBody User user) {
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		user.setEnabled(1);
-		user.setRegisterDate(new Date());
-					
-		if (userv.register(user)) {
-			return 1;
-		}else {
-			return 0;
-		}
-	}
-		
-	// Formulario para editar los datos
-	@PostMapping("/edit-user/{id}")
-	public int editUser(@RequestBody User usuario, @PathVariable(name="id") int  idUsuario) {
-		
-		if(userv.findById(idUsuario) == null) {
-			return 0;
-		}else {
-			User user = userv.findById(idUsuario);
-			usuario.setIdUser(user.getIdUser());
-			usuario.setEnabled(user.getEnabled());
-			usuario.setBirthDate(user.getBirthDate());
-			usuario.setRegisterDate(user.getRegisterDate());
-			usuario.setCards(user.getCards());
-			
-			if (userv.modificarUsuario(usuario) == 1) {
-				System.out.println("Usuario modificado con éxito :)");
-				return 1;
-			}else {
-				return 0;
+	public JSONResponse registerUser(@RequestBody UserRegisterDTO userDTO) {
+		JSONResponse response = new JSONResponse();
+		try {
+			response = userv.register(userDTO);
+			if(response.getCode() == 200) {
+				response.setToken(authService.generateTokenForUser(userDTO.getEmail(), userDTO.getPassword()));
 			}
+		}catch(Exception e) {
+			Utils.createJSONResponseError(response, "registerUser",this.getClass().getSimpleName(), e);
+			
 		}
-		
+		return response;
 	}
 	
-	// Mostrar lista de tarjetas por Usuario
-	@GetMapping("/lista-tarjetas/{id}")
-	public List<Card> tarjetasUsuario(@PathVariable(name="id") int  idUsuario) {
-		List<Card> tarjetas = tserv.cardsByUser(idUsuario);						
-		return tarjetas;
+	@GetMapping("/delete-user/{id}")
+	public JSONResponse deleteUser(@PathVariable(name="id") int idUser) {
+		JSONResponse response = new JSONResponse();
+		try {
+			response = userv.deleteUser(idUser);
+		} catch (Exception e) {
+			Utils.createJSONResponseError(response, "deleteUser", this.getClass().getSimpleName(), e);
+		}
+		return response;
 	}
-	
-//	@GetMapping("/login")
-//	public ResponseEntity<?> login(@RequestBody JwtRequest authenticationRequest) throws Exception {
-//	        authenticate(authenticationRequest.getEmail), authenticationRequest.getPassword());
-//	        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-//	        final String token = jwtUtil.generateToken(userDetails);
-//	        return ResponseEntity.ok(new JwtResponse(token));
-//	    
-//	}
-	
-//	// Formatear la fecha de nacimiento
-//	@InitBinder
-//	public void initBinder(WebDataBinder binder) {
-//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//		sdf.setLenient(false);
-//		binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, false));
-//	}
 		
+	@PostMapping("/edit-user/{id}")
+	public JSONResponse editUser(@RequestBody UserRegisterDTO userDTO, @PathVariable(name="id") int  idUser) {
+		JSONResponse response = new JSONResponse();
+		try {
+			response = userv.editUser(userDTO, idUser);
+		} catch (Exception e) {
+			Utils.createJSONResponseError(response, "deleteUser", this.getClass().getSimpleName(), e);
+		}
+		return response;		
+	}
+			
 }

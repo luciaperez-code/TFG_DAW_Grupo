@@ -1,16 +1,18 @@
 package com.edix.apirest.cinema.service;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edix.apirest.cinema.entities.JSONResponse;
 import com.edix.apirest.cinema.entities.Projection;
 import com.edix.apirest.cinema.entities.Screen;
 import com.edix.apirest.cinema.repository.ProjectionRepository;
 import com.edix.apirest.cinema.repository.ScreenRepository;
+import com.edix.apirest.cinema.utils.Utils;
 
 @Service
 public class ProjectionServiceImpl implements ProjectionService{
@@ -21,48 +23,57 @@ public class ProjectionServiceImpl implements ProjectionService{
 	@Autowired
 	private ScreenRepository srepo;
 	
-	// Lista de todos los Projections
 	@Override
-	public List<Projection> findAllProjections() {
-		return prepo.findAll();
+	public JSONResponse findAllProjections() {
+		JSONResponse response = new JSONResponse();
+		List<Projection> allProjections = prepo.findAll();
+		if (allProjections != null) {
+			Utils.createJSONResponseOk(response, allProjections);
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "No hay proyecciones :(");
+		}
+		return response;
 	}
 
-	// Buscar un Projection por su ID
 	@Override
-	public Projection findProjectionById(int idProjection) {
-		return prepo.findById(idProjection).orElse(null);
+	public JSONResponse findProjectionById(int idProjection) {
+		JSONResponse response = new JSONResponse();
+		Projection projectionById = prepo.findById(idProjection).orElse(null);
+		if (projectionById != null) {
+			Utils.createJSONResponseOk(response, projectionById);
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "No hay proyecciones con este ID :(");
+		}
+		return response;
 	}
 	
-	// Ordenar de Projections
 	@Override
-	public List<Projection> OrderByPriceAsc() {
-		return prepo.orderByPriceAsc();
-	}
-
-	// Ordenación de Projections
-	@Override
-	public List<Projection> OrderByPriceDesc() {
-		return prepo.orderByPriceDesc();
-	}
-
-	// Borrar un Projection
-	@Override
-	public int deleteProjection(int idProjection) {
-		int filasBorradas = 0;
-		try {
-			prepo.deleteById(idProjection);
-			filasBorradas=1;
-		}catch(Exception e) {
-			e.printStackTrace();
+	public JSONResponse findProjectionByFilm(int idFilm) {
+		JSONResponse response = new JSONResponse();
+		List<Projection> allProjectionsByFilm = prepo.findProjectionByFilm(idFilm);
+		if (allProjectionsByFilm != null) {
+			Utils.createJSONResponseOk(response, allProjectionsByFilm);
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "Esta película no existe o no tiene proyecciones :(");
 		}
-		return filasBorradas;
+		return response;
 	}
 
-	// Insertar un Projection
 	@Override
-	public int insertarProjection(Projection projection) {
-		int filasInsertadas = 0;
-		
+	public JSONResponse getProjectionByDate(Date date) {
+		JSONResponse response = new JSONResponse();
+		List<Projection> allProjectionsByDate = prepo.findProjectionByDate(date);
+		if (allProjectionsByDate != null) {
+			Utils.createJSONResponseOk(response, allProjectionsByDate);
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "No hay proyecciones para esta fecha :(");
+		}
+		return response;
+	}
+	
+	@Override
+	public JSONResponse insertarProjection(Projection projection) {		
+		JSONResponse response = new JSONResponse();
 		if (projection.getScreen() != null) {
 			
 			Screen screen = srepo.findById(projection.getScreen().getIdScreen()).orElse(null);
@@ -78,52 +89,49 @@ public class ProjectionServiceImpl implements ProjectionService{
 			Arrays.fill(specialOccupiedSeatsArray, "0");
 			projection.setOccupiedSpecialSeats(Arrays.toString(specialOccupiedSeatsArray));
 			System.out.println(Arrays.toString(specialOccupiedSeatsArray));
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "Screen no encontrada");
 		}
 		
-		try {
-			prepo.save(projection);
-			filasInsertadas = 1;
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		return filasInsertadas;
+		Utils.createJSONResponseOk(response, prepo.save(projection));
+
+		return response;
 	}
 	
-	// Modificar un Projection
 	@Override
-	public int modifyProjection(Projection projection) {
-			
-		int filasModificadas = 0;
-		Projection prod = null;
-		try {
-			prod = prepo.findById(projection.getIdProjection()).orElse(null);
-			prod = projection;
-			prepo.save(prod);
-			filasModificadas = 1;
-		}catch(Exception e) {
-			e.printStackTrace();
+	public JSONResponse deleteProjection(int idProjection) {
+		JSONResponse response = new JSONResponse();
+		Projection projectionToDelete = prepo.findById(idProjection).orElse(null);
+		if (projectionToDelete != null) {
+			prepo.delete(projectionToDelete);
+			Utils.createJSONResponseOk(response, "Proyección borrada con éxito");
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "No hay proyecciones con este ID :(");
 		}
-		return filasModificadas;
+		return response;
+	}
+	
+	@Override
+	public JSONResponse modifyProjection(Projection projection, int idProjection) {
+		JSONResponse response = new JSONResponse();
+		if (prepo.findById(idProjection) != null) {
+			projection.setIdProjection(idProjection);
+			Utils.createJSONResponseOk(response, prepo.save(projection));
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "No hay proyecciones con ese id :(");
+		}
+		return response;
 	}
 
 	@Override
-	public double findPrecioByNombre(String nombre) {
-		return prepo.findPriceByName(nombre);
-	}
-
-	@Override
-	public List<Projection> buscador(String nombre) {
-		return prepo.buscadorNombre(nombre);
-	}
-
-
-	@Override
-	public int bookProjection(int idProjection, String[] normalSeats, String[] specialSeats) {
+	public JSONResponse bookProjection(int idProjection, String normalSeats, String specialSeats) {
+		JSONResponse response = new JSONResponse();
 
         Projection projection = prepo.findById(idProjection).orElse(null);
-        if (projection == null) 
-        	return 0;
+        if (projection == null) {
+        	Utils.createJSONResponseFailed(response, 404, "Projection no encontrada con ese ID");
+        	return response;
+        }
 
         String updatedNormalSeats = updateReservedSeats(projection.getOccupiedNormalSeats(), normalSeats);
         if (updatedNormalSeats != null) {
@@ -134,23 +142,21 @@ public class ProjectionServiceImpl implements ProjectionService{
         if (updatedSpecialSeats != null) {
         	projection.setOccupiedSpecialSeats(updatedSpecialSeats);
         }
-
         prepo.save(projection);
-        return 1;
+        Utils.createJSONResponseOk(response, prepo.save(projection));
+        return response;
 	}
 	
-    private String updateReservedSeats(String currentOccupiedSeats, String[] newReservedSeats) {
+    private String updateReservedSeats(String currentOccupiedSeats, String newReservedSeats) {
  
-    	// Veo si newReservedSeats es nulo o vacío
-        if (newReservedSeats == null || newReservedSeats.length == 0) {
+        if (newReservedSeats == null || newReservedSeats.isEmpty()) {
+            return currentOccupiedSeats;
+        }
+        if (newReservedSeats == null || newReservedSeats.isEmpty()) {
             return currentOccupiedSeats;
         }
 
-        if (newReservedSeats[0] == null || newReservedSeats[0].isEmpty()) {
-            return currentOccupiedSeats;
-        }
-
-        String[] reservedSeatsArray = newReservedSeats[0].replaceAll("[\\[\\],\\s]", "").split("");
+        String[] reservedSeatsArray = newReservedSeats.replaceAll("[\\[\\],\\s]", "").split("");
         if (reservedSeatsArray.length == 0) {
             return currentOccupiedSeats;
         }
@@ -175,5 +181,8 @@ public class ProjectionServiceImpl implements ProjectionService{
         
         return Arrays.toString(currentSeatsArray);
     }
+
+
+
     
 }

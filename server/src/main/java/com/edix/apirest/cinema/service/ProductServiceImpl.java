@@ -1,13 +1,14 @@
 package com.edix.apirest.cinema.service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.edix.apirest.cinema.entities.JSONResponse;
 import com.edix.apirest.cinema.entities.Product;
 import com.edix.apirest.cinema.repository.ProductRepository;
+import com.edix.apirest.cinema.utils.Utils;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -15,88 +16,122 @@ public class ProductServiceImpl implements ProductService{
 	@Autowired
 	private ProductRepository prepo;
 	
-	// Lista de todos los productos
 	@Override
-	public List<Product> findAllProducts() {
-		return prepo.findAll();
-	}
-
-	// Buscar un producto por su ID
-	@Override
-	public Product findProductById(int idProducto) {
-		return prepo.findById(idProducto).orElse(null);
+	public JSONResponse findAllProducts() {
+		JSONResponse response = new JSONResponse();
+		List<Product> allProducts = prepo.findAll();
+		if (allProducts != null) {
+			Utils.createJSONResponseOk(response, allProducts);
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "No hay productos :(");
+		}
+		return response;
 	}
 	
-	// Ordenación de productos
 	@Override
-	public List<Product> OrderByPriceAsc() {
-		return prepo.orderByPriceAsc();
+	public JSONResponse getProductByType(int idProductType) {
+		JSONResponse response = new JSONResponse();
+		List<Product> productsByType = prepo.getProductByType(idProductType);
+		if (productsByType != null) {
+			Utils.createJSONResponseOk(response, productsByType);
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "No hay productos de este tipo :(");
+		}
+		return response;
 	}
 
-	// Ordenación de productos
 	@Override
-	public List<Product> OrderByPriceDesc() {
-		return prepo.orderByPriceDesc();
+	public JSONResponse getProductByRelatedFilm(int idFilm) {
+		JSONResponse response = new JSONResponse();
+		List<Product> productsByRelatedFilm = prepo.getProductByRelatedFilm(idFilm);
+		if (productsByRelatedFilm != null) {
+			Utils.createJSONResponseOk(response, productsByRelatedFilm);
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "No hay productos relacionados con esta peli :(");
+		}
+		return response;
 	}
 
-	// Borrar un producto
 	@Override
-	public int deleteProduct(int idProducto) {
-		int filasBorradas = 0;
-		try {
-			prepo.deleteById(idProducto);
-			filasBorradas=1;
-		}catch(Exception e) {
-			e.printStackTrace();
+	public JSONResponse findProductById(int idProducto) {
+		JSONResponse response = new JSONResponse();
+		Product productById = prepo.findById(idProducto).orElse(null);
+		if (productById != null) {
+			Utils.createJSONResponseOk(response, productById);
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "No hay productos relacionados con esta peli :(");
 		}
-		return filasBorradas;
-	}
-
-	// Insertar un producto
-	@Override
-	public int insertarProducto(Product producto) {
-		int filasInsertadas = 0;
-		try {
-			prepo.save(producto);
-			filasInsertadas = 1;
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		return filasInsertadas;
+		return response;
 	}
 	
-	// Modificar un producto
 	@Override
-	public int modifyProduct(Product producto) {
-			
-		int filasModificadas = 0;
-		Product prod = null;
-		try {
-			prod = prepo.findById(producto.getIdProduct()).orElse(null);
-			prod = producto;
-			prepo.save(prod);
-			filasModificadas = 1;
-		}catch(Exception e) {
-			e.printStackTrace();
+	public JSONResponse OrderByPriceAsc() {
+		JSONResponse response = new JSONResponse();
+		List<Product> productsByPriceAsc = prepo.orderByPriceAsc();
+		if (productsByPriceAsc !=null){
+			Utils.createJSONResponseOk(response, productsByPriceAsc);
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "No hay productos");
 		}
-		return filasModificadas;
-	}
-
-	// Listad de productos que coincidan con lo que se busca por el nombre
-	@Override
-	public List<Product> buscador(String nombre) {
-		return prepo.buscador(nombre);
+		return response;
 	}
 
 	@Override
-	public Product buscadorNombre(String nombre) {
-		return prepo.buscadorNombre(nombre);
+	public JSONResponse OrderByPriceDesc() {
+		JSONResponse response = new JSONResponse();
+		List<Product> productsByPriceDesc = prepo.orderByPriceDesc();
+
+		if (productsByPriceDesc !=null){
+			Utils.createJSONResponseOk(response, productsByPriceDesc);
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "No hay productos");
+		}
+		return response;
+	}
+	
+	@Override
+	public JSONResponse addProduct(Product product) {
+		JSONResponse response = new JSONResponse();
+		Utils.createJSONResponseOk(response, prepo.save(product));
+		return response;
+	}
+	
+	@Override
+	public JSONResponse deleteProduct(int idProduct) {
+		JSONResponse response = new JSONResponse();
+		Product productToDelete = prepo.findById(idProduct).orElse(null);
+		if (productToDelete != null) {
+			prepo.delete(productToDelete);
+			Utils.createJSONResponseOk(response, "Producto borrado con éxito");
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "No hay productos con ese id :(");
+		}
+		return response;
+	}
+	
+	@Override
+	public JSONResponse modifyProduct(Product product, int idProduct) {
+		JSONResponse response = new JSONResponse();
+		if (prepo.findById(idProduct) != null) {
+			product.setIdProduct(idProduct);
+			Utils.createJSONResponseOk(response, prepo.save(product));
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "No hay productos con ese id :(");
+		}
+		return response;
 	}
 
 	@Override
-	public BigDecimal findPrecioByNombre(String nombre) {
-		return prepo.findPriceByName(nombre);
+	public JSONResponse buscador(String nombre) {
+		JSONResponse response = new JSONResponse();
+		List<Product> productsByName = prepo.buscador("%" + nombre + "%");
+		if (productsByName !=null){
+			Utils.createJSONResponseOk(response, productsByName);
+		}else {
+			Utils.createJSONResponseFailed(response, 404, "No hay productos con ese nombre");
+		}
+		return response;
+		
 	}
 
 }

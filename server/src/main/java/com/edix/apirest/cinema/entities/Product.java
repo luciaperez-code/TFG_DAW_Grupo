@@ -2,6 +2,10 @@ package com.edix.apirest.cinema.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -30,13 +34,20 @@ public class Product implements Serializable {
 
 	private int stock;
 
-	//uni-directional many-to-one association to Familia
+	//uni-directional many-to-one association to productType
 	@ManyToOne
 	@JoinColumn(name="idProductType")
 	private ProductType productType;
+	
+	//uni-directional many-to-one association to Film
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="idRelatedFilm")
+    @JsonIgnore
+    private Film film;
 
 	public Product() {
 	}
+
 
 	public int getIdProduct() {
 		return idProduct;
@@ -87,13 +98,30 @@ public class Product implements Serializable {
 	}
 
 	public ProductType getProductType() {
-		return productType;
+		return (productType != null) ? productType : null;
 	}
 
 	public void setProductType(ProductType productType) {
 		this.productType = productType;
 	}
 
+	public Film getFilm() {
+		return this.film;
+	}
+
+	public void setFilm(Film film) {
+		this.film = film;
+	}
+	
+	@Transient
+    @JsonProperty("idFilm")
+	public Integer getIdFilm() {
+	    if (film != null) {
+	        return film.getIdFilm();
+	    } else {
+	        return null;
+	    }
+	}
 
 	@Override
 	public String toString() {
