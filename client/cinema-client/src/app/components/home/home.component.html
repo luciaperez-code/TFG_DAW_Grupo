@@ -1,0 +1,26 @@
+<!-- <div class="slider">
+    <div class="slides">
+        <div *ngFor="let slide of slides; let i = index">
+            <img *ngIf="i === currentIndex" [src]="'assets/slider' + (i) + '.jpg'" [alt]="slide">
+        </div>
+    </div>
+    
+    <button class="prev" (click)="prevSlide()">&#10094;</button>
+    <button class="next" (click)="nextSlide()">&#10095;</button>
+</div>-->
+<div class="home">
+        <div class="slider">
+        <div class="slides">
+            <div *ngFor="let slide of slides; let i = index">
+                <img *ngIf="i === currentIndex" [src]="'assets/img/slider/slider' + (i) + '.jpg'" [alt]="slide">
+                <a *ngIf="i === currentIndex" href="/film-detail/"></a>
+                <div class="slide-title" *ngIf="i === currentIndex">{{slide | uppercase}}</div>
+            </div>
+        </div>
+        
+        <button class="prev" (click)="prevSlide()">&#10094;</button>
+        <button class="next" (click)="nextSlide()">&#10095;</button>
+    </div>
+</div>
+
+  

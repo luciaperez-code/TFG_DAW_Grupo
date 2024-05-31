@@ -1,0 +1,93 @@
+<!-- detail-projection.component.html 
+<div class="projection-details">
+    <h2>{{ projection.film.title }}</h2>
+    <p>{{ projection.film.plot }}</p>
+    <p><strong>Director:</strong> {{ projection.film.director }}</p>
+    <p><strong>Género:</strong> {{ projection.film.genre }}</p>
+    <p><strong>Duración:</strong> {{ projection.film.runtime }}</p>
+    <div class="screen">
+      <div class="screen-label">Pantalla</div>
+      <div class="seats">
+        <div *ngFor="let seat of normalSeats; let i = index" 
+             class="seat" 
+             [ngClass]="{'occupied': seat === 1, 'selected': selectedSeats.includes(i)}"
+             (click)="toggleSeatSelection(i)">
+        </div>
+        <div *ngFor="let seat of specialSeats; let i = index"
+             class="seat special-seat"
+             [ngClass]="{'occupied': seat === 1, 'selected': selectedSpecialSeats.includes(i)}"
+             (click)="toggleSpecialSeatSelection(i)">
+        </div>
+      </div>
+    </div>
+    <button (click)="proceedToCheckout()">Continuar</button>
+  </div>
+
+
+<div class="projection-details">
+    <h2>{{projection?.film.title}}</h2>
+    <p>{{projection?.film.plot}}</p>
+    <div class="screen">
+      <div class="screen-label">Pantalla</div>
+    </div>
+    <div class="seats">
+      <div *ngFor="let row of seatRows; let rowIndex = index" class="seat-row">
+        <div *ngFor="let seat of row; let seatIndex = index" 
+             [ngClass]="getSeatClass(rowIndex, seatIndex)"
+             (click)="selectSeat(rowIndex, seatIndex)">
+        </div>
+      </div>
+      <div *ngFor="let row of specialSeatRows; let rowIndex = index" class="special-seat-row">
+        <div *ngFor="let seat of row; let seatIndex = index" 
+             [ngClass]="getSpecialSeatClass(rowIndex, seatIndex)"
+             (click)="selectSpecialSeat(rowIndex, seatIndex)">
+        </div>
+      </div>
+    </div>
+    <button (click)="confirmSelection()">Continuar</button>
+  </div>-->
+  
+  <div class="projection-details">
+    <div class="projection-info">
+        <h1>{{projection?.film.title}}</h1>
+        <p><b>Sala: </b>{{projection?.screen.idScreen}}</p>
+        <p><b>Sesión: </b>{{this.projectionDate}}, {{projection?.startTime}}</p>
+    </div>
+
+    <h2>Elige tus asientos</h2>
+    <div class="legend">
+      <div class="legend-item"><div class="seat selected"></div>Seleccionada</div>
+      <div class="legend-item"><div class="seat unavailable"></div>Disponible</div>
+      <div class="legend-item"><div class="seat occupied"></div>No disponible</div>
+      <div class="legend-item"><div class="seat special"></div>Butacas especiales</div>
+    </div>
+    <div class="screen">
+      <div class="screen-label">Pantalla</div>
+    </div>
+    <div class="seats">
+        <div class="seat-row" *ngFor="let row of seatRows; let rowIndex = index">
+          <div *ngFor="let seat of row; let seatIndex = index" 
+               [ngClass]="getSeatClass(rowIndex, seatIndex)" 
+               (click)="selectSeat(rowIndex, seatIndex)">
+          </div>
+        </div>
+      </div>
+      <div class="selection-bar">
+        <div class="selected-seats">
+          Butacas seleccionadas: 
+          <span *ngFor="let seat of selectedNormalSeats; let i = index">
+            {{seat.row + 1}}-{{seat.seat + 1}}{{i < selectedNormalSeats.length - 1 ? ', ' : ''}}
+          </span>
+          <div *ngIf="selectedSpecialSeats.length > 0">
+            Butacas especiales seleccionadas:
+            <span *ngFor="let seat of selectedSpecialSeats; let i = index">
+              {{seat.row + 1}}-{{seat.seat + 1}}{{i < selectedSpecialSeats.length - 1 ? ', ' : ''}}
+            </span>
+        </div>
+
+        </div>
+        <button (click)="addCart()">Continuar</button>
+      </div>
+</div>
+  
+  

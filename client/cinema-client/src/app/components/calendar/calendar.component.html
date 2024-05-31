@@ -1,0 +1,38 @@
+<div *ngIf="projections && projections.length > 0">
+  
+    <div class="date-picker">
+      <h1 class="title">Horarios</h1>
+  
+      <div class="date-picker-header">
+        <h3>Selecciona un día:</h3>
+        <div class="date-picker-options">
+          <div class="date-option" *ngFor="let day of availableDays" [class.selected]="day === selectedDay" (click)="onDaySelect(day)">
+            {{ day }}
+          </div>
+        </div>
+      </div>
+      <div class="showtime-list" *ngIf="filteredProjections && filteredProjections.length >= 1">
+        <h4>Proyecciones para el día seleccionado:</h4>
+        <ul>
+          <li *ngFor="let projection of filteredProjections" class="projectionsList">
+            <div class="projection-item">
+              <div class="thumbnail">
+                <img [src]="'assets/img/films/' + projection.film.image" alt="{{projection.film.title}}">
+              </div>
+              <div class="details">
+                <div class="title">{{projection.film.title}}</div>
+                <div class="start-time">{{projection.startTime}}</div>
+                <div class="room-info">Sala 1</div>
+              </div>
+              <button class="view-button" [routerLink]="['/projection-detail', projection.idProjection]">Ver Proyección</button>
+            </div>       
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="filteredProjections.length == 0 && selectedDay != null" class="empty-cart">
+        <h1>¡Vaya! Parece que no ha proyecciones para hoy</h1>
+        <h1>Por favor, selecciona otro día</h1>
+        <img [src]="'assets/img/utils/SadFilm.png'" alt="emptyCart">
+      </div>
+    </div>
+  </div> 

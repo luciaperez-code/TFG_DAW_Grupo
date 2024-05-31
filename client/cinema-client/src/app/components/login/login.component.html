@@ -1,0 +1,11 @@
+<div class="login-popup">
+  <h2>Iniciar sesión</h2>
+  <form class="login-form" (ngSubmit)="onSubmit(authRequest)">
+    <input class="login-input" type="email" [(ngModel)]="authRequest.email" name="email" placeholder="Email">
+    <input class="login-input" type="password" [(ngModel)]="authRequest.password" name="password"
+      placeholder="Contraseña">
+    <button class="login-button" type="submit">Iniciar sesión</button>
+  </form>
+  <div *ngIf="error" class="error-message">Usuario o contraseña incorrectos</div>
+  <!--<button class="close-button" (click)="closePopup()">X</button>-->
+</div>

@@ -1,0 +1,95 @@
+<div class="cesta">
+    <div *ngIf="carrito.length == 0 && !gracias" class="empty-cart">
+      <h2>No tienes elementos en tu carrito.</h2>
+      <img [src]="'assets/img/utils/SadFilm.png'" alt="emptyCart">
+      <h3>¡No te quedes con las ganas! Explora nuestra oferta aquí</h3>
+      <div class="sort-buttons">
+        <a routerLink="/films"><span>Películas</span></a>
+        <a href="/products">Productos</a>
+      </div>
+    </div>
+    <div *ngIf="carrito.length >= 1">
+      <div class="carrito">
+        <h2>Esto es lo que tienes en tu cesta:</h2>
+        <!-- Mostrar las proyecciones -->
+        <div *ngIf="projections.length > 0" class="projections">
+          <h3>Proyecciones:</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Nombre de la película</th>
+                  <th>Fecha</th>
+                  <th>Entradas</th>
+                  <th class="precio-unitario">Precio Unitario</th>
+                  <th>Precio Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let projection of projections; let i = index">
+                  <td>{{ projection.film.title }}</td>
+                  <td class="centered">{{ projection.date }} {{ projection.startTime }}</td>
+                  <td class="centered">{{ projection.cantidad }}</td>
+                  <td class="centered precio-unitario">{{ projection.price | number:'1.2-2'}}€</td>
+                  <td class="centered">{{ projection.precioTotal | number:'1.2-2'}}€</td>
+                  <td><i class="fas fa-trash-alt text-danger" (click)="removeFromCart(projection.idProjection)"></i></td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        <div *ngIf="products.length > 0" class="products">
+          <h3>Productos:</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre del Producto</th>
+                <th>Cantidad</th>
+                <th class="precio-unitario">Precio Unitario</th>
+                <th>Precio Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of products; let i = index">
+                <td>{{ product.name }}</td>
+                <td class="centered">{{ product.cantidad }}</td>
+                <td class="centered">{{ product.price | number:'1.2-2'}}€</td>
+                <td class="centered precio-unitario">{{ product.precioTotal | number:'1.2-2'}}€</td>
+                <td><i class="fas fa-trash-alt text-danger" (click)="removeFromCart(product.idProduct)"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div *ngIf="products.length > 0" class="products">
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th></th>
+                <th>Precio total</th>
+                <th>{{totalPrice | number:'1.2-2'}}€</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+      <button *ngIf="!token" (click)="irARegistro()">Registrarse</button>
+      <button *ngIf="!token" (click)="irALogin()">Iniciar sesión</button>
+  
+      <div *ngIf="token" class="display-cards">
+        <h3>Selecciona una tarjeta de pago o añade una nueva:</h3>
+        <div *ngFor="let card of cards; let i = index" class="tarjeta" [class.selected]="selectedCardIndex === i" (click)="selectCard(i)">
+          <div class="card">
+            <p><strong>Número: </strong> {{ card.number }}</p>
+            <p><strong>Nombre del titular: </strong> {{ card.holderName }}</p>
+            <p><strong>Fecha de caducidad: </strong> {{ card.expirationDate }}</p>
+          </div>
+        </div>
+      </div>
+      <button *ngIf="carrito.length > 0" (click)="pagar()" class="pay">Pagar</button>
+    </div>
+    <div *ngIf="gracias" class="gracias">
+      <h2>Gracias por tu compra!!! </h2>
+      <img [src]="'assets/img/utils/Gracias.png'" alt="graciasPorTuCompra">
+    </div>
+</div>
+  

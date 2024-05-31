@@ -1,0 +1,89 @@
+<div class="film-detail-component">
+  <div class="film-detail" *ngIf="film">
+    <div class="film-detail-image">
+      <img src="assets/img/films/{{ film.image }}" [alt]="film.title">
+    </div>
+    <div class="film-detail-info">
+      <h1><b>{{ film.title }}</b></h1>
+      <div class="film-detail-center">
+        <div class="film-p">
+          <p><b>DIRECTOR:</b></p>
+          <p>{{ film.director }}</p>
+        </div>
+        <div class="film-p">
+          <p><b>REPARTO:</b></p>
+          <p>{{ film.actors }}</p>
+        </div>
+        <div class="film-p">
+          <p><b>SINOPSIS:</b></p>
+          <p>{{ film.plot }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="film-detail-additional">
+      <div class="film-p">
+        <p><b>DURACION:</b></p>
+        <p>{{ film.runtime }}</p>
+      </div>
+      <div class="film-p">
+        <p><b>FECHA DE ESTRENO:</b></p>
+        <p>{{ film.released }}</p>
+      </div>
+      <div class="film-p">
+        <p><b>CLASIFICACION:</b></p>
+        <p>{{ film.rated }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="projections && projections.length > 0">
+  
+    <div class="date-picker">
+      <h1 class="title">Horarios</h1>
+  
+      <div class="date-picker-header">
+        <h3>Selecciona un día:</h3>
+        <div class="date-picker-options">
+          <div class="date-option" *ngFor="let day of availableDays" [class.selected]="day === selectedDay" (click)="onDaySelect(day)">
+            {{ day }}
+          </div>
+        </div>
+      </div>
+      <div class="showtime-list">
+        <h4>Proyecciones para el día seleccionado:</h4>
+        <ul>
+          <li *ngFor="let projection of filteredProjections"  class="projectionsList">
+            <div class="projection-item" [routerLink]="['/projection-detail', projection.idProjection]">
+              <div class="start-time">{{projection.startTime}}</div>
+              <div class="room-info">Sala 1</div>
+            </div>       
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div> 
+
+  <div class="products-list" *ngIf="products && products.length >= 1">
+    <h2 class="title_products">Productos relacionados</h2>
+    <div class="product" *ngFor="let product of products" (click)="selectProduct(product)">
+      <img [src]="'assets/img/products/' + product.image + '.jpg'" alt="Producto">
+      <h3>{{ product.name }}</h3>
+      <p>Precio: {{ product.price | number:'1.2-2' }}€</p>
+    <!-- Detalle del producto seleccionado -->
+    <div *ngIf="selectedProduct" class="product-details-overlay" (click)="deselectProduct()">
+      <div class="product-details" (click)="$event.stopPropagation()">
+        <img [src]="'assets/img/products/' + selectedProduct.image + '.jpg'" alt="Producto">
+        <h3>{{ selectedProduct.name }}</h3>
+        <p>Precio: {{ selectedProduct.price | number:'1.2-2' }}€</p>
+        <div class="quantity-selector">
+          <button (click)="decreaseQuantity()">-</button>
+          <input type="number" [(ngModel)]="selectedQuantity" min="0" readonly>
+          <button (click)="increaseQuantity()">+</button>
+        </div>
+        <button class="blue-button" [disabled]="selectedQuantity === 0" (click)="addToCart()">Añadir a la cesta</button>
+      </div>
+    </div>
+  </div> 
+  
+</div>
+

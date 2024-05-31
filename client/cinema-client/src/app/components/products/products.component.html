@@ -1,0 +1,48 @@
+<div class="products-container">
+
+  <div class="buttons-top">
+
+    <!-- Desplegable filtro por tipo de producto -->
+    <div class="filter-dropdown">
+      <label for="productType">Filtrar por tipo de producto:</label>
+      <select (change)="filterByProductType($event)">
+        <option value="">Todos los tipos</option>
+        <option *ngFor="let type of productTypes" [value]="type.idProductType">{{ type.name }}</option>
+      </select>
+    </div>
+
+    <div class="sort-buttons">
+      <label>Ordenar por:</label>
+      <button class="blue-button" (click)="sortByPriceAsc()">Precio Ascendente</button>
+      <button class="blue-button" (click)="sortByPriceDesc()">Precio Descendente</button>
+    </div>
+
+
+  </div>
+
+  <div class="products-list">
+    <div class="product" *ngFor="let product of filteredProducts" (click)="selectProduct(product)">
+      <img [src]="'assets/img/products/' + product.image + '.jpg'" alt="Producto">
+      <h3>{{ product.name }}</h3>
+      <p>Precio: {{ product.price | number:'1.2-2' }}€</p>
+    </div>
+
+    <!-- Detalle del producto seleccionado -->
+    <div *ngIf="selectedProduct" class="product-details-overlay" (click)="deselectProduct()">
+      <div class="product-details" (click)="$event.stopPropagation()">
+        <img [src]="'assets/img/products/' + selectedProduct.image + '.jpg'" alt="Producto">
+        <h3>{{ selectedProduct.name }}</h3>
+        <p>Precio: {{ selectedProduct.price | number:'1.2-2' }}€</p>
+        <div class="quantity-selector">
+          <button (click)="decreaseQuantity()">-</button>
+          <input type="number" [(ngModel)]="selectedQuantity" min="0" readonly>
+          <button (click)="increaseQuantity()">+</button>
+        </div>
+        <button class="blue-button" [disabled]="selectedQuantity === 0" (click)="addToCart()">Añadir a la cesta</button>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>

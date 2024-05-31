@@ -1,0 +1,127 @@
+/* Estilos para el pop-up de inicio de sesión
+.register-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .register-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .register-input {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .register-button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .register-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .close-button {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    background-color: grey;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 0px 10px 0px 10px;
+    cursor: pointer;
+    z-index: 999;
+  }
+  
+  .close-button:hover {
+    background-color: red;
+  }
+  
+  .error-message{
+    color: red;
+    margin-top: 20px;
+  }
+   */
+
+
+
+   .register-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    width: 35%;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 4%;
+    padding-top: 3%;
+  }
+  
+  .register-popup h2 {
+    margin-top: 0;
+  }
+  
+  .register-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .register-input {
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .register-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 3%;
+  }
+  
+  .register-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .error-message {
+    color: red;
+    margin-top: 10px;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #777;
+  }
+  

@@ -1,0 +1,55 @@
+<header class="header">
+  <div class="header__logo">
+    <a href="/"><img src="assets/Logo_edix.png" alt="Logo Edix"></a>
+  </div>
+  <nav class="header__nav">
+    <a routerLink="/films"><span>Películas</span></a>
+    <a href="/products">Productos</a>
+    <a href="/calendar">Horarios</a>
+    <!-- Agrega aquí los demás enlaces -->
+  </nav>
+  <div class="header__actions">
+    <div *ngIf="!token">
+      <a (click)="showPopup()">Registrarse</a>
+      <button class="login-button" (click)="openLoginPopup()">Iniciar sesión</button>
+    </div>
+    <div *ngIf="token" class="profile-container" (mouseenter)="showLogoutButton()" (mouseleave)="hideLogoutButton()">
+      <a href="/user-detail">
+        <mat-icon>person</mat-icon> Mi perfil
+      </a>
+      <button *ngIf="showLogout" (click)="logout()" class="logout-button">Cerrar sesión</button>
+    </div>
+    <div class="cart-container">
+      <a href="/cart">
+        <mat-icon>shopping_cart</mat-icon>
+      </a>
+    </div>
+  </div>
+
+  <div class="menu-icon" (click)="toggleMenu()">
+    <mat-icon>menu</mat-icon>
+  </div>
+  <div class="mobile-menu" [class.open]="menuOpen">
+    <a routerLink="/films"><span>Películas</span></a>
+    <a href="/products" (click)="toggleMenu()">Productos</a>
+    <a href="/calendar" (click)="toggleMenu()">Horarios</a>
+
+    <div *ngIf="!token" class="buttons-login">
+      <a href="/register">Registrarse</a>
+      <button class="login-button" (click)="openLoginPopup()">Iniciar sesión</button>
+    </div>
+    <div *ngIf="token" class="profile-container" (mouseenter)="showLogoutButton()" (mouseleave)="hideLogoutButton()">
+      <a href="/user-detail">
+        <mat-icon>person</mat-icon> Mi perfil
+      </a>
+      <button *ngIf="showLogout" (click)="logout()" class="logout-button">Cerrar sesión</button>
+    </div>
+    <div class="cart-container">
+      <a href="/cart">
+        <mat-icon>shopping_cart</mat-icon>
+      </a>
+    </div>
+  </div>
+
+</header>
+<app-register *ngIf="isPopupVisible" (close)="handleClose()"></app-register>

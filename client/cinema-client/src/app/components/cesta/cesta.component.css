@@ -1,0 +1,201 @@
+.cesta{
+    background-color: rgba(255, 255, 255, 0.123);
+    border-radius: 5px;
+    padding: 20px;
+    padding-bottom: 5%;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    width: 90%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    color: white;
+}
+
+/* Ajustes generales */
+h2, h3 {
+    margin-top: 20px;
+  }
+  
+  /* Estilos para los elementos del carrito */
+  .carrito-item {
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+  
+  /* Estilos para los botones */
+  button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 2%;
+    align-items: right;
+    border-radius: 5px;
+    width: 150px;
+    height: 50px;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  .pay{
+    position: absolute;
+    right: 10%;
+  }
+
+  .display-cards{
+    margin: 2%;
+    margin-top: 5%;
+  }
+
+  .tarjeta {
+    background-color: rgba(255, 255, 255, 0.336);
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+  }
+  
+  .card {
+    margin-left: 4%;
+    margin-right: 4%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    align-items: center;
+    width: 80%;
+  }
+  
+  .card p{
+    margin-left: 10px;
+  }
+  
+  .tarjeta.selected {
+    background-color: #66aaf375;
+    color: white;
+  }
+  
+  .tarjeta:hover {
+    background-color: #f0f0f04d;
+  }
+
+  .carrito {
+    background-color: #f0f0f0;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-top: 2%;
+    color: black;
+    padding-left: 5%;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  th, td {
+    padding: 8px;
+  }
+    
+  tr:hover {
+    background-color: #e9e9e9;
+  }
+  
+  .centered{
+    text-align: center;
+    }
+
+    .text-danger {
+        color: red;
+        cursor: pointer;
+      }
+      
+      .text-danger:hover {
+        color: darkred;
+      }
+
+   .empty-cart{
+    padding-top: 50px;
+    text-align: center;
+   }
+
+   .empty-cart img{
+    height: 150px;
+   }
+
+   .sort-buttons {
+    margin-bottom: 10px;
+    margin-top: 30px;
+  }
+  
+  .empty-cart a {
+    margin-right: 10px;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .products{
+    margin-top: 40px;
+  } 
+
+  h3{
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+  }
+
+  table{
+    border-top: 4px solid #3583f8; /* Añade un borde superior a la tabla para mayor separación */
+    background-color: #ddf0fd;
+    margin-top: 0px;
+  }
+
+  .table-total{
+    background-color: #afdbfa;
+  }
+
+  .gracias{
+    margin-top: 80px;
+    text-align: center;
+  }
+  .gracias img{
+    height: 250px;
+  }
+
+  /* Pantallas grandes */
+@media only screen and (min-width: 1200px) {
+    .card {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+}
+  
+  @media only screen and (min-width: 768px) {
+    .form-group input {
+      margin-left: 5%;
+      max-width: 80%;
+      flex: 1;
+    }
+  
+    .error-message {
+      margin-top: 0; 
+      margin-left: 10px; 
+    }
+  }
+
+  @media (max-width: 650px){
+    .precio-unitario{
+      display: none;
+    }
+  }

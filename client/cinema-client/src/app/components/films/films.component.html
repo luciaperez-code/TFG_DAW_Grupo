@@ -1,0 +1,42 @@
+<div class="films">
+  <h2>Cartelera</h2>
+  <div class="film-list">
+      <div class="film-item" *ngFor="let film of releasedFilms">
+          <img src="assets/img/films/{{ film.image }}" alt="{{ film.title }}" (click)="goToFilmDetail(film.idFilm)">
+          <div class="film-details">
+              <!--<h2>{{ film.title }}</h2>-->
+              <p>{{ film.genre }}</p>
+              <a [routerLink]="['/film', film.idFilm]" class="btn">Ver más</a>
+          </div>
+      </div>
+  </div>
+
+  <div class="comming-soon-list" *ngIf="comingSoonFilms && comingSoonFilms.length > 1">
+    <h2>Próximamente...</h2>
+    <div class="film-item" *ngFor="let film of comingSoonFilms">
+        <img src="assets/img/films/{{ film.image }}" alt="{{ film.title }}" (click)="goToFilmDetail(film.idFilm)">
+    </div>
+</div>
+
+</div>
+
+
+<!-- movies.component.html 
+
+<div class="movies-container">
+    <h2>Todas las películas</h2>
+    <div class="filter-options">
+      <span>Filtrar por:</span>
+      <button>Todas</button>
+      <button>En cartelera</button>
+      <button>Próximos estrenos</button>
+    </div>
+    <div class="movie-list">
+      <div class="movie" *ngFor="let film of listFilms">
+        <div class="movie-image" [style.background-image]="'url(' + getFilmImageUrl(film) + ')'"></div>
+        <div class="movie-title">{{ film.title }}</div>
+      </div>
+    </div>
+  </div>-->
+  
+

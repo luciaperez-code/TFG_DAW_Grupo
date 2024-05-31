@@ -1,0 +1,27 @@
+<!--<div class="register-popup">
+    <h2>Registrarse</h2>
+    <form class="register-form" (ngSubmit)="onSubmit(authRequest)">
+      <input class="register-input" type="email" [(ngModel)]="authRequest.email" name="email" placeholder="Email">
+      <input class="register-input" type="password" [(ngModel)]="authRequest.password" name="password"
+        placeholder="Contraseña">
+      <button class="register-button" type="submit">Iniciar sesión</button>
+    </form>
+    <div *ngIf="error" class="error-message">Usuario o contraseña incorrectos</div>
+    <button class="close-button" (click)="closePopup()">X</button>
+  </div>-->
+
+  <div class="register-popup">
+    <h2>Registrarse</h2>
+    <form class="register-form" (ngSubmit)="onSubmit(registerRequest)">
+      <input class="register-input" type="text" [(ngModel)]="registerRequest.name" name="name" placeholder="Nombre">
+      <input class="register-input" type="text" [(ngModel)]="registerRequest.surname" name="surname" placeholder="Apellido">
+      <input class="register-input" type="date" [(ngModel)]="registerRequest.birthDate" name="birthDate" placeholder="Fecha de nacimiento">
+      <input class="register-input" type="email" [(ngModel)]="registerRequest.email" name="email" placeholder="Email">
+      <input class="register-input" type="password" [(ngModel)]="registerRequest.password" name="password" placeholder="Contraseña">
+      <button class="register-button" type="submit">Registrarse</button>
+    </form>
+    <div *ngIf="error" class="error-message">{{error}}</div>
+    <button class="close-button" (click)="closePopup()">X</button>
+  </div>
+  
+  

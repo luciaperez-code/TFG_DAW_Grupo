@@ -1,0 +1,109 @@
+<div class="user-details" *ngIf="token">
+
+  <div class="user-info">
+    <h2>Información del usuario</h2>
+    <!--<img src="assets/user-avatar.webp" alt="Avatar">-->
+    <div *ngIf="user" class="user-avatar">
+      <p><strong>Nombre:</strong> {{ user.name }} {{ user.surname }}</p>
+      <p><strong>Fecha de nacimiento:</strong> {{ user.birthDate }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Fecha de registro:</strong> {{ user.registerDate }}</p>
+    </div>
+  </div>
+
+  <div class="user-info">
+    <h2>Mis pedidos</h2>
+    <div *ngIf="pedidos && pedidos.length > 0" class="user-avatar">
+      <div *ngFor="let p of pedidos; let i = index" class="order-summary">
+        <p><strong>Pedido:</strong> {{ p.idOrder }}</p>
+        <p><strong>Fecha:</strong> {{ p.createdDate }}</p>
+        <button (click)="toggleDetails(i)">Mostrar detalles</button>
+        <div *ngIf="p.showDetails">
+          <div *ngFor="let item of p.itemsInOrder">
+            <div *ngIf="item.product != null">
+              <p><strong>Producto:</strong> {{ item.product.name }}</p>
+              <p><strong>Cantidad:</strong> {{ item.quantity }}</p>
+              <p><strong>Precio:</strong> {{ item.price | number:'1.2-2' }}€</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!pedidos">
+      <p>Todavía no has hecho ningún pedido</p>
+    </div>
+  </div>
+
+  <div class="user-cards">
+    <h2>Tarjetas guardadas</h2>
+    <button class="add-card-button" (click)="openAddCardForm()">Añadir Tarjeta</button>
+    <div *ngIf="showAddCardForm">
+      <form [formGroup]="addCardForm" (ngSubmit)="onSubmit()" class="add-card-form">
+        <h2>Nueva tarjeta a añadir:</h2>
+      
+        <div class="form-group">
+          <label *ngIf="!isSmallScreen" for="number" class="input-label">Número de tarjeta</label>
+          <input type="text" formControlName="number" name="number"
+            [placeholder]="isSmallScreen ? 'Número de tarjeta' : ''" maxlength="16">
+          <div *ngIf="submitted && addCardForm.get('number')?.errors" class="error-message">
+            El número de tarjeta es requerido y debe tener 16 dígitos
+          </div>
+        </div>
+      
+        <div class="form-group">
+          <label *ngIf="!isSmallScreen" for="holderName" class="input-label">Nombre del titular</label>
+          <input type="text" formControlName="holderName" name="holderName"
+            [placeholder]="isSmallScreen ? 'Nombre del titular' : ''">
+          <div *ngIf="submitted && addCardForm.get('holderName')?.errors" class="error-message">
+            El nombre del titular es requerido
+          </div>
+        </div>
+      
+        <div class="form-group">
+          <label *ngIf="!isSmallScreen" for="expirationDate" class="input-label">Fecha de caducidad</label>
+          <input type="date" formControlName="expirationDate" name="expirationDate"
+            [placeholder]="isSmallScreen ? 'Fecha de caducidad' : ''" [min]="minExpirationDate">
+          <div *ngIf="submitted && addCardForm.get('expirationDate')?.errors" class="error-message">
+            La fecha de caducidad es requerida
+          </div>
+        </div>
+      
+        <div class="form-group">
+          <label *ngIf="!isSmallScreen" for="cvv" class="input-label">CVV</label>
+          <input type="text" formControlName="cvv" name="cvv" [placeholder]="isSmallScreen ? 'CVV' : ''" maxlength="3">
+          <div *ngIf="submitted && addCardForm.get('cvv')?.errors" class="error-message">
+            El CVV es requerido y debe tener 3 dígitos
+          </div>
+        </div>
+      
+        <div *ngIf="error" class="error-message">{{ error }}</div>
+        <div class="form-buttons">
+          <button type="submit" class="add-card-form-button">Guardar</button>
+          <button type="button" class="delete-card-button" (click)="cancelAddCard()">Cancelar</button>
+        </div>
+      </form>
+      
+    </div>
+    <div *ngIf="user && user.cards">
+      <div *ngFor="let card of user.cards">
+        <div class="card">
+          <p><strong>Número: </strong> {{ card.number }}</p>
+          <p><strong>Nombre del titular: </strong> {{ card.holderName }}</p>
+          <p><strong>Fecha de caducidad: </strong> {{ card.expirationDate }}</p>
+          <button class="delete-card-button" (click)="deleteCard(card.idCard)">Eliminar Tarjeta</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="no-token" *ngIf="!token">
+  <div  class="empty-user">
+    <h2>¡Vaya! No estás autenticado</h2>
+    <img [src]="'assets/img/utils/SadFilm.png'" alt="emptyUser">
+    <h3>Puedes registrarte o iniciar sesión aquí</h3>
+    <div class="sort-buttons">
+      <a routerLink="/register"><span>Registro</span></a>
+      <a href="/login">Iniciar sesión</a>
+    </div>
+  </div>
+</div>

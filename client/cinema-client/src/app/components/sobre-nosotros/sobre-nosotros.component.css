@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    align-items: center;
+    padding-top: 50px;
+    color: white;
+}
+
+.profile-image {
+    max-width: 300px; /* Establece el ancho máximo de la imagen en 300px */
+    height: auto; /* Permite que la imagen mantenga su proporción de aspecto */
+    margin-right: 20px;
+    margin-left: 10%;
+}
+
+.text-content {
+    max-width: 400px; /* Ajusta el ancho máximo del contenedor de texto según tus necesidades */
+    margin-left: 3%;
+}
+
+.text-content h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.text-content p {
+    font-size: 16px;
+    line-height: 1.5;
+}

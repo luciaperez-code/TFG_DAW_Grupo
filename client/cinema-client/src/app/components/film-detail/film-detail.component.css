@@ -1,0 +1,361 @@
+
+.film-detail-component{
+
+}
+
+/*Detalles de la película*/
+.film-detail {
+  /*display: grid;
+  grid-template-columns: 30% 1fr 20%;
+  grid-gap: 20px;   Espacio entre columnas */
+  margin-bottom: 50px;
+  padding-top: 3%;
+}
+
+.film-detail-image img {
+  height: auto;
+  margin-left: 20%;
+  margin-top: 5%;
+  border-radius: 10px;
+}
+
+h1 {
+  color: white;
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
+
+.film-detail-info {
+  color: white;
+  margin-right: 6%;
+  /**text-align: justify;*/
+
+}
+
+.film-detail-center {
+  margin-bottom: 40px;
+}
+
+p {
+  margin-bottom: 5px;
+}
+
+.film-p {
+  color: white;
+  text-align: justify;
+  padding: none;
+  margin-bottom: 20px;
+}
+
+.film-detail-additional {
+  margin-bottom: 5px;
+  margin-top: 35%;
+  margin-right: 40%;
+  color: white;
+  /*text-align: justify;*/
+}
+
+
+/*Proyecciones*/
+.date-picker {
+  background-color: rgba(255, 255, 255, 0.123);
+  border-radius: 5px;
+  padding: 20px;
+  padding-bottom: 5%;
+  margin-bottom: 50px;
+  margin-top: 50px;
+  width: 90%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.date-picker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.date-picker-options {
+  display: flex;
+}
+
+.date-option {
+  cursor: pointer;
+  margin-right: 10px;
+  padding: 10px 15px;
+  border: 2px solid #70d2ff;
+  border-radius: 5px;
+  background-color: transparent;
+  color: #70d2ff;
+  cursor: pointer;
+}
+
+.date-option:hover {
+  background-color: #156bbb58;
+}
+.selected {
+  background-color: #156bbb; 
+  color: #fff; 
+}
+
+.showtime-list {
+  margin-top: 20px;
+}
+
+.showtime-list h4 {
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.showtime-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.showtime-list li {
+  margin-bottom: 5px;
+  color: #fff;
+}
+
+.title {
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+
+}
+
+/**Responsive**/
+@media only screen and (min-width: 768px) {
+  .film-detail {
+    display: grid;
+    grid-template-columns: 30% 1fr 20%; /* Columnas para la imagen, información principal y adicional */
+    grid-gap: 20px; /* Espacio entre las columnas */
+    margin-bottom: 50px;
+  }
+  
+  .film-detail-image {
+    width: 70%; /* Asegurar que la imagen ocupe todo el ancho de su contenedor */
+    border-radius: 10px; /* Redondear los bordes de la imagen */
+  }
+  
+  .film-detail-info {
+    text-align: justify; /* Alinear el texto de la información principal */
+  }
+  
+  .film-detail-additional {
+    text-align: justify; /* Alinear el texto de la información adicional */
+  }
+}
+
+/* Pantallas pequeñas */
+@media only screen and (max-width: 767px) {
+  .film-detail {
+    display: block; /* Cambiar a bloque para apilar los elementos verticalmente */
+  }
+
+  .film-detail-info {
+    margin-top: 20px; /* Espacio entre la imagen y la información principal en pantallas más pequeñas */
+  }
+
+}
+
+
+
+/**CSS**/
+.v-date-showtime-picker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.v-carousel {
+  display: flex;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.v-date {
+  cursor: pointer;
+  padding: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+}
+
+.v-date:hover {
+  background-color: #ccc;
+}
+
+.v-date .day {
+  font-weight: bold;
+}
+
+.v-showtimes {
+  color: #333;
+}
+
+.v-showtimes h2 {
+  margin-bottom: 10px;
+}
+
+.v-showtimes ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.v-showtimes li {
+  margin-bottom: 5px;
+}
+
+.projectionsList{
+  display: flex;
+  flex-wrap: row;
+  justify-content: center;
+  margin-top: 20px;
+
+}
+
+.projection-item {
+  background-color: #579ceb98;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  width: 150px;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.start-time {
+  size: 60px;
+  font-weight: bold;
+}
+
+.room-info {
+  font-size: 14px;
+}
+
+
+
+/*Lista de productos*/
+.products-list {
+  margin-top: 3%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 5%;
+  margin-left: 5%;
+  margin-right: 5%;
+  padding-bottom: 5%;
+  padding-top: 3%;
+}
+
+.title_products{
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.product {
+  border: 1px solid #ccc;
+  background-color: rgba(255, 255, 255, 0.199);
+  color: white;
+  border-radius: 5px;
+  padding: 10px;
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.product img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+h3 {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.product p {
+  margin: 5px 0;
+}
+
+.product:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+/* Superposición de detalles del producto seleccionado */
+.product-details-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.product-details {
+  background: #b8d4f1cb;
+  color: black;
+  padding: 20px;
+  border-radius: 10px;
+  width: 35%;
+  max-width: 600px;
+  max-height: 90%;
+  overflow: auto;
+  text-align: center;
+}
+
+.product-details img {
+  width: 70%;
+  height: auto;
+  border-radius: 10px;
+} 
+
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.quantity-selector button {
+  background: white;
+  color: black;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.quantity-selector input {
+  width: 40px;
+  text-align: center;
+  border: none;
+  background: transparent;
+  color: black;
+  font-size: 18px;
+}
+
+button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.blue-button {
+  margin-right: 10px;
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
