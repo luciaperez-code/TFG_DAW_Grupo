@@ -33,6 +33,7 @@ public class LineaPedidoDto implements Serializable{
     @Nullable
 	private String occupiedSpecialSeats;
     
+    @Nullable
     private int idCard;
 		
 	public LineaPedidoDto() {

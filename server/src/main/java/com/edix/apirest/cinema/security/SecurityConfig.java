@@ -53,6 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .antMatchers("/producttype/add-productType", "/producttype/delete-productType", "/producttype/edit-productType").hasRole("ADMIN")
             .antMatchers("/projections/add-projection", "/projections/delete-projection", "/projections/edit-projection").hasRole("ADMIN")
             .antMatchers("/screens/add-screen", "/screens/delete-screen", "/screens/edit-screen").hasRole("ADMIN")
+			.antMatchers("/users/detail").hasAnyRole("CLIENT", "ADMIN")
             
             //Vistas públicas
 			.antMatchers("/", "/films/**", "/products/**", "/producttype/**","/projections/**", "/screens/**", "/users/register", "/login").permitAll()

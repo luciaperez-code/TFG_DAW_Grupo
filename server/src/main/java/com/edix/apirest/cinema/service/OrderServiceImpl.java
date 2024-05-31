@@ -15,6 +15,7 @@ import com.edix.apirest.cinema.entities.Order;
 import com.edix.apirest.cinema.entities.Product;
 import com.edix.apirest.cinema.entities.User;
 import com.edix.apirest.cinema.repository.CardRepository;
+import com.edix.apirest.cinema.repository.ItemsInOrderRepository;
 import com.edix.apirest.cinema.repository.OrderRepository;
 import com.edix.apirest.cinema.repository.ProductRepository;
 import com.edix.apirest.cinema.repository.ProjectionRepository;
@@ -40,7 +41,10 @@ public class OrderServiceImpl implements OrderService{
 	
 	@Autowired
 	private UserService userv;
-		
+	
+	@Autowired
+	private ItemsInOrderRepository iiorepo;
+	
 	@Override
 	public JSONResponse findAll() {
 		JSONResponse response = new JSONResponse();
@@ -137,7 +141,7 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
-	public JSONResponse buy(Authentication authentication) {
+	public JSONResponse buy(Authentication authentication, int idCard) {
 		JSONResponse response = new JSONResponse();
 		String username = authentication.getName();
 		User user = userv.userByEmail(username);
@@ -150,8 +154,13 @@ public class OrderServiceImpl implements OrderService{
     	}
 
     	Order order = orderBasket.get(0);
-		order.setCreatedDate(new Date());
-		
+	    order.setCard(crepo.findById(idCard).orElse(null));
+	    if (order.getCard() == null) {
+	    	Utils.createJSONResponseFailed(response, 404, "Tarjeta no encontrada");
+	    	return response;
+	    }
+	    
+		order.setCreatedDate(new Date());	    
         List<ItemsInOrder> itemsInOrder = order.getItemsInOrder();		
 		for (ItemsInOrder ele: itemsInOrder) {
 			
@@ -178,7 +187,7 @@ public class OrderServiceImpl implements OrderService{
 			}
 		}
 		order.setStatus("Closed");
-		
+
 		Order savedOrder = orepo.save(order);
 		Utils.createJSONResponseOk(response, savedOrder);
 		

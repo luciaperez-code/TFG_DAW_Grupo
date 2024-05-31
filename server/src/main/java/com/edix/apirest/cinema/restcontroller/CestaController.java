@@ -71,7 +71,8 @@ public class CestaController {
 		JSONResponse response = new JSONResponse();
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			response = oserv.buy(authentication);	
+			int idCard = lista.get(0).getIdCard();
+			response = oserv.buy(authentication, idCard);	
 		} catch (Exception e) {
 			Utils.createJSONResponseError(response, "buy", this.getClass().getSimpleName(), e);
 		}

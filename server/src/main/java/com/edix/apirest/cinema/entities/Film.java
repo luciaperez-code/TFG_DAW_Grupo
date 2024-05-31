@@ -39,7 +39,7 @@ public class Film implements Serializable {
 	private String runtime, genre, director, writer, actors, plot, language, country, awards;
 	private double score;
 	private boolean comingsoon;
-	private String images;
+	private String image;
 	
 
 	public Film() {
@@ -204,13 +204,13 @@ public class Film implements Serializable {
 	}
 
 
-	public String getImages() {
-		return images;
+	public String getImage() {
+		return image;
 	}
 
 
-	public void setImages(String images) {
-		this.images = images;
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 
@@ -238,7 +238,7 @@ public class Film implements Serializable {
 		return "Film [idFilm=" + idFilm + ", title=" + title + ", year=" + year + ", rated=" + rated + ", released="
 				+ released + ", runtime=" + runtime + ", genre=" + genre + ", director=" + director + ", writer="
 				+ writer + ", actors=" + actors + ", plot=" + plot + ", language=" + language + ", country=" + country
-				+ ", awards=" + awards + ", score=" + score + ", comingsoon=" + comingsoon + ", images=" + images + "]";
+				+ ", awards=" + awards + ", score=" + score + ", comingsoon=" + comingsoon + ", images=" + image + "]";
 	}
 	
 }

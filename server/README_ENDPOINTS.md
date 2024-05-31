@@ -25,6 +25,8 @@
 ### FILM ("/films")
 - /all
     (GET) http://localhost:8087/films/all
+- /allReleasedFilms
+	(GET) http://localhost:8087/films/allReleasedFilms
 - /id
     (GET) http://localhost:8087/films/1
 - /add-film @RequestBody Film Film
@@ -46,14 +48,19 @@
             "comingsoon": false,
             "images": "Reino-planeta-de-simios.jpg"
         }
+- /delete-film/{idFilm}
+	(GET) http://localhost:8087/films/delete-film/1
+- /edit-film/{idFilm} @RequestBody Film Film
+	(POST) http://localhost:8087/films/edit-film/1
 - /search @RequestParam("title")
     (GET) http://localhost:8087/films/search?title=El Rey León
 
 
 ### ORDER ("/orders")
 - /all
-- /all/{id} @PathVariable("idUsuario") 
-- /ver-pedido/{id} @PathVariable("idPedido")
+- /allOrders -> ADMIN
+- /user/{idUser} -> ADMIN
+- /details/{id} @PathVariable("idPedido")
 
 
 ### PRODUCT ("/products")
@@ -197,6 +204,8 @@
     (GET) http://localhost:8087/users/1
 - /email/{email} @PathVariable("email")
     (GET) http://localhost:8087/users/email/bobesponja@gmail.com
+- /detail -> authenticated
+	(GET) http://localhost:8087/users/detail
 - /register @RequestBody user
     (POST) http://localhost:8087/users/register
     {
@@ -236,7 +245,7 @@
 
 ### CESTA ("/shopping")
 - getCesta 
-- /addCesta" @RequestBody lista
+- /addBasket" @RequestBody lista
 	
 - /buy" @RequestBody lista, card
     (POST) http://localhost:8087/shopping/buy

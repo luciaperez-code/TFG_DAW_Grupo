@@ -16,7 +16,7 @@ public interface OrderService {
 	JSONResponse ordersByUserAndStatus(int idUsuario, String status);
 	JSONResponse getCesta(Authentication authentication);
 	
-	JSONResponse buy(Authentication auth);
+	JSONResponse buy(Authentication auth, int idCard);
 	JSONResponse deleteOrder(int idPedido);
 	JSONResponse addBasket(Authentication auth, List<LineaPedidoDto> lp);
 }

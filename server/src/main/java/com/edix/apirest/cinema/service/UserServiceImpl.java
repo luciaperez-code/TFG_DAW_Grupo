@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -133,6 +134,17 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User userByEmail(String email) {
 		return urepo.findByEmail(email);
+	}
+
+	@Override
+	public JSONResponse authenticatedUserInfo(Authentication authentication) {
+		JSONResponse response = new JSONResponse();
+		String username = authentication.getName();
+		if (username != null) {
+			User user = urepo.findByEmail(username);
+			Utils.createJSONResponseOk(response, user);
+		}
+		return response;
 	}
 	
 }

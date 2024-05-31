@@ -34,7 +34,7 @@ public class Order implements Serializable {
 
 	//uni-directional many-to-one association to Card
 	@ManyToOne
-	@JoinColumn(name="idCard")
+	@JoinColumn(name="idCard", nullable=true)
 	private Card card;
 
 	//uni-directional many-to-one association to Usuario

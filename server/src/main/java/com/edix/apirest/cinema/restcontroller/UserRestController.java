@@ -1,6 +1,8 @@
 package com.edix.apirest.cinema.restcontroller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,6 +61,18 @@ public class UserRestController {
 		}
 		return response;
 	}
+	
+	@GetMapping("/detail")
+	public JSONResponse authenticatedUserDetail() {
+		JSONResponse response = new JSONResponse();
+		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			response = userv.authenticatedUserInfo(authentication);
+		} catch (Exception e) {
+			Utils.createJSONResponseError(response, "findUserByEmail", this.getClass().getSimpleName(), e);
+		}
+		return response;
+	}	
 	
 	@PostMapping("/register")
 	public JSONResponse registerUser(@RequestBody UserRegisterDTO userDTO) {
